@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<title>Crud SPRINGBOOT thymeleaf</title>
+<th:block th:replace="boostrap" />
+</head>
+
+<style>
+.imagem {
+	max-width: 200px;
+	max-height: 140px;
+	width: auto;
+	height: auto;
+	margin-right: 10px;
+}
+</style>
+<body>
+
+	<div class="container-fluid">
+		<nav th:replace="navbar"></nav>
+
+		<div class="row my-5 text-center">
+			<div class="col-lg-12">
+				<h1 class="text-center">CRUD SPRINGBOOT THYMELEAF</h1>
+				<br />
+				<h2 class="text-center mb-5">Springboot thymeleaf :D</h2>
+			</div>
+		</div>
+
+
+		<div class="row my-5 text-center">
+			<div class="col-sm-12">
+				<img alt="" class="imagem" th:src="@{/imagens/jpa.jpg}"> <img
+					alt="" class="imagem" th:src="@{/imagens/jquery.png}"> <img
+					alt="" class="imagem" th:src="@{/imagens/mysql.png}"> <img
+					alt="" class="imagem" th:src="@{/imagens/spring.png}"> <img
+					alt="" class="imagem" th:src="@{/imagens/thymeleaf.png}">
+			</div>
+		</div>
+
+	</div>
+</body>
+</html>
