@@ -13,6 +13,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -49,6 +50,7 @@ public class Pessoa implements UserDetails, Serializable {
 	@Column(nullable = false)
 	private String senha;
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "pessoa_id")
 	private List<Doc> docs;
 
 	public String getSenha() {

@@ -83,7 +83,6 @@ public class PessoaController {
 	@PostMapping("/salvar")
 	public String salvar(@Valid Pessoa pessoa, BindingResult bindingResult, Model model,
 			@RequestParam("arquivos") MultipartFile[] files) throws IOException {
-
 		if (pessoa.getId() != null) {
 			Pessoa findById = pessoaService.findById(pessoa.getId());
 			if (!pessoa.getEmail().equalsIgnoreCase(findById.getEmail())) {
@@ -102,7 +101,6 @@ public class PessoaController {
 				return "cadastro";
 			}
 		}
-
 		model.addAttribute("msgCadastro", pessoa.getId() == null ? "Cadastrado!" : "Atualizado!");
 		pessoaService.salvar(pessoa, files);
 		return "cadastro";
@@ -123,7 +121,6 @@ public class PessoaController {
 		return ResponseEntity.ok().contentType(MediaType.parseMediaType(doc.getTipoArquivo()))
 				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=\"" + doc.getNomeArquivo() + "\"")
 				.body(new ByteArrayResource(doc.getData()));
-
 	}
 
 	@GetMapping("/del/{id}")
@@ -157,10 +154,16 @@ public class PessoaController {
 		if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
 			return "login";
 		}
-
 		return "redirect:/index";
 	}
-
+	
+	@GetMapping("/del-doc")
+	public String deleteDoc(@RequestParam(name = "id") Long id, RedirectAttributes ra) {
+		docDAO.deleteById(id);
+		ra.addFlashAttribute("msgDoc", "Arquivo removido!");
+		return "redirect:/pessoas/1";
+	}
+	
 	@GetMapping("/user")
 	@ResponseBody
 	public String criarUser() {
