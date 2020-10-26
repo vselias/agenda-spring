@@ -10,7 +10,7 @@
 		<nav th:replace="navbar"></nav>
 		<div class="row">
 			<div class="col-lg-12">
-				<h3 class="text-center my-3">Página de Cadastro</h3>
+				<h3 class="text-center my-3" th:text="${pessoa.id} eq null? 'Pagina de Cadastro':'Atualizar Registro'" ></h3>
 
 				<div class="text-success text-center" th:if="${msgCadastro ne null}">
 					<p th:text="${msgCadastro}"></p>
