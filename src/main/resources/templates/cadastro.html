@@ -31,13 +31,13 @@
 									class="form-control" type="email" th:field="${pessoa.email}"
 									name="email">
 								<div th:each="err : ${#fields.errors('email')}">
-									<p th:text="${err}" class="text-danger"
+									<p th:text="${err}" class="bg-danger text-white text-center" 
 										th:if="${err} eq '{ATENÇÃO}: Email já cadastrado!' and ${msgEmail} eq true">
 									</p>
-									<p th:text="${err}" class="text-danger"
+									<p th:text="${err}" class="bg-danger text-white text-center"
 										th:if="${err} eq '{ATENÇÃO}: Email já cadastrado!' and ${pessoa.id} eq null">
 									</p>
-									<p th:text="${err}" class="text-danger"
+									<p th:text="${err}" class="bg-danger text-white text-center"
 										th:if="${err} eq '{ATENÇÃO}: Informe um email!'">
 									</p>
 								</div>
@@ -46,7 +46,7 @@
 								<label style="text-align: left">Senha:</label> <input
 									class="form-control" type="password" th:field="${pessoa.senha}"
 									name="password">
-								<div class="text-danger" th:if="${#fields.hasErrors('senha')}"
+								<div class="bg-danger text-white text-center" th:if="${#fields.hasErrors('senha')}"
 									th:errors="*{senha}"></div>
 							</div>
 							<div class="form-group  col-lg-6">

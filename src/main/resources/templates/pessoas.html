@@ -138,13 +138,13 @@
 											<tr th:each="doc : ${pessoa.docs}">
 												<td >
 													<div class="row">
-														<div class="col-lg-7">
-															Download: <a th:href="@{'/download/'+${doc.id}}"> <th:block
+														<div class="col-lg-7 border">
+															<strong>Download:</strong> <a class="bg-primary text-white" th:href="@{'/download/'+${doc.id}}"> <th:block
 																	th:text="${doc.nomeArquivo}" />
 															</a>
 														</div>
-														<div class="col-lg-5 ">
-															<a onclick="return confirm('Deseja excluir?')" th:href="@{'/del-doc?id='+${doc.id}}" class="d-inline btn btn-sm btn-danger"> Remover 
+														<div class="col-lg-5 border px-0">
+															<a onclick="return confirm('Deseja excluir?')" th:href="@{'/del-doc?id='+${doc.id}}" class="btn btn-sm btn-danger"> Remover 
 																<svg
 																width="1em" height="1em" viewBox="0 0 16 16"
 																class="bi bi-trash" fill="currentColor"
