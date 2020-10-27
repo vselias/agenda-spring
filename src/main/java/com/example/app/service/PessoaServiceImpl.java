@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.app.dao.PessoaDAO;
@@ -19,6 +20,7 @@ import com.example.app.entidade.Doc;
 import com.example.app.entidade.Pessoa;
 
 @Service
+@Transactional
 public class PessoaServiceImpl implements PessoaService {
 
 	@Autowired
