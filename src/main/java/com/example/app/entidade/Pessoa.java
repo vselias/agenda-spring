@@ -29,12 +29,13 @@ public class Pessoa implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	@Length(min = 10, max = 40, message = "Mínimo de 10 e máximo 50 caracters.")
+	@Length(min = 10, max = 40, message = "Mínimo de 10 e máximo 40 caracters.")
 	@Column(length = 50)
 	private String nome;
 	private String telefone;
 	@NotBlank(message = "{ATENÇÃO}: Informe um email!")
 	@Column(nullable = false)
+	@Length(min = 10, max = 40, message = "Mínimo de 10 e máximo 40 caracters.")
 	private String email;
 	private String sexo;
 	private boolean ativo;
