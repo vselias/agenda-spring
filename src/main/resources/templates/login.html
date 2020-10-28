@@ -24,17 +24,19 @@ body {
 
 		<div class="row justify-content-center">
 
-			<h2 class="text-center text-white my-5">Página de Login</h2>
-			<div th:if="${param.error}">
-				<p class="col-lg-3 text-center bg-danger text-white ">Login ou
-					senha inválidos!</p>
-			</div>
-			<div th:if="${param.logout}">
-				<p class="col-lg-3 text-center bg-danger text-white ">Você foi
-					disconectado!</p>
-			</div>
-			<div class="col-lg-12 my-5" align="center">
-				<form action="#" th:action="@{/login}" method="post" style="max-width: 700px;">
+			<div class="col-lg-12 " align="center">
+				<h2 class="text-center  text-white my-5">Página de Login</h2>
+				<div th:if="${param.error}">
+					<p class="col-lg-3  text-center bg-danger text-white ">Login ou
+						senha inválidos!</p>
+				</div>
+				<div th:if="${param.logout}">
+					<p class="col-lg-3 text-center bg-danger text-white ">Você foi
+						disconectado!</p>
+				</div>
+
+				<form action="#" th:action="@{/login}" method="post"
+					style="max-width: 700px;">
 					<div class="col-lg-6">
 						<input type="text" name="username"
 							class="text-center form-control" placeholder="E-mail">
