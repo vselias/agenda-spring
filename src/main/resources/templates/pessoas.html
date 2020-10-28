@@ -132,8 +132,8 @@
 										th:text="${pessoa.dataCadastro} ? ${#dates.format(pessoa.dataCadastro, 'dd/MM/yyyy')}: 'N/A'">
 									</td>
 									<td th:text="${pessoa.ativo}? 'Ativo': 'Desativado'"></td>
-									<td class="w-30">
-										<table class="w-100">
+									<td style="max-width: 300px;">
+										<table style="max-width: 300px;">
 											<tr th:each="doc : ${pessoa.docs}">
 												<td >
 													<div class="row">
