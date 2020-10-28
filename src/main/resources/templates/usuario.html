@@ -23,7 +23,7 @@ body {
 
 			<div class="col-lg-12 my-5" align="center">
 
-				<div class="bg-success text-white text-center" th:if="${msgUsuario}"
+				<div class="bg-success text-white text-center col-lg-3 mb-3" th:if="${msgUsuario}"
 					th:text="${msgUsuario}"></div>
 				<form th:action="@{/usuario}" method="post" th:object="${usuario}"
 					style="max-width: 700px;">

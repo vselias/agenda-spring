@@ -27,7 +27,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.example.app.validators.UniqueEmail;
 
 @Entity
-public class Pessoa implements UserDetails, Serializable {
+public class Pessoa implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	@Id
@@ -45,9 +45,6 @@ public class Pessoa implements UserDetails, Serializable {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Temporal(TemporalType.DATE)
 	private Date dataCadastro;
-	@NotBlank(message = "{ATENÇÃO}: Informe uma senha!")
-	@Column(nullable = false)
-	private String senha;
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "pessoa_id")
 	private List<Doc> docs;
@@ -61,14 +58,6 @@ public class Pessoa implements UserDetails, Serializable {
 
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
-	}
-
-	public String getSenha() {
-		return senha;
-	}
-
-	public void setSenha(String senha) {
-		this.senha = senha;
 	}
 
 	public List<Doc> getDocs() {
@@ -165,48 +154,6 @@ public class Pessoa implements UserDetails, Serializable {
 	@Override
 	public String toString() {
 		return "Cidade: " + this.getCidade() + " Estado: " + this.getEstado();
-	}
-
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getPassword() {
-		// TODO Auto-generated method stub
-		return this.getSenha();
-	}
-
-	@Override
-	public String getUsername() {
-		// TODO Auto-generated method stub
-		return this.getEmail();
-	}
-
-	@Override
-	public boolean isAccountNonExpired() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
-	@Override
-	public boolean isAccountNonLocked() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
-	@Override
-	public boolean isCredentialsNonExpired() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
-	@Override
-	public boolean isEnabled() {
-		// TODO Auto-generated method stub
-		return true;
 	}
 
 }

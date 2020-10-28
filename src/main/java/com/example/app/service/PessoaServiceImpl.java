@@ -52,7 +52,6 @@ public class PessoaServiceImpl implements PessoaService {
 				}
 			}
 		}
-		pessoa.setSenha(new BCryptPasswordEncoder().encode(pessoa.getSenha()));
 		user.getPessoas().add(pessoa);
 		pessoa.setUsuario(user);
 		pessoaDAO.save(pessoa);

@@ -171,7 +171,7 @@ public class PessoaController {
 		ra.addFlashAttribute("msgDoc", "Arquivo removido!");
 		return "redirect:/pessoas/1";
 	}
-	
+
 	@Deprecated
 	@GetMapping("/user")
 	@ResponseBody
@@ -183,13 +183,13 @@ public class PessoaController {
 			p.setAtivo(true);
 			p.setDataCadastro(new Date());
 			p.setSexo("M");
-			p.setSenha("321");
 			pessoaService.salvar(p, null);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return "Usuário já criado!";
 	}
+
 	@Deprecated
 	@GetMapping("/username")
 	@ResponseBody
@@ -198,7 +198,6 @@ public class PessoaController {
 		Pessoa p = new Pessoa();
 		p.setAtivo(true);
 		p.setEmail("pessoaDoUsuario@usuario.com");
-		p.setSenha("3232323232");
 		p.setNome("Pessoa Usuario");
 		user.getPessoas().add(p);
 		pessoaService.salvar(p, null);
