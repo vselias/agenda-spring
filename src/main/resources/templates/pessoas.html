@@ -113,7 +113,7 @@
 				<div class="row justify-content-center">
 					<p th:if="${msgDoc}" th:text="${msgDoc}" class="bg-danger text-white text-center h5"></p>
 					<h3 class="col-lg-12 text-center my-3">Lista de Arquivos</h3>
-					<div class="col-lg-8">
+					<div class="col-lg-10">
 						<table class="table table-striped ">
 							<thead>
 								<tr>
@@ -132,7 +132,7 @@
 										th:text="${pessoa.dataCadastro} ? ${#dates.format(pessoa.dataCadastro, 'dd/MM/yyyy')}: 'N/A'">
 									</td>
 									<td th:text="${pessoa.ativo}? 'Ativo': 'Desativado'"></td>
-									<td class="w-50">
+									<td class="w-30">
 										<table class="w-100">
 											<tr th:each="doc : ${pessoa.docs}">
 												<td >
