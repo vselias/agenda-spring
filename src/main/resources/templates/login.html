@@ -13,39 +13,45 @@ body {
 	background-attachment: fixed;
 	background-position: center;
 	background-attachment: fixed;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-position: center;
 }
 </style>
 <body>
 
 	<div class="container-fluid text-center">
-		<div class="row" style="margin-top: 5em;">
-			<div class="col-lg-12">
-				<h2 class="text-center">Página de Login</h2>
-				<div th:if="${param.error}">
-					<p class="text-black my-3">Login e Senha inválidos!</p>
-				</div>
-				<div th:if="${param.logout}">
-					<p class="text-black my-3">Você foi disconectado!</p>
-				</div>
+
+		<div class="row justify-content-center">
+
+			<h2 class="text-center text-white my-5">Página de Login</h2>
+			<div th:if="${param.error}">
+				<p class="col-lg-3 text-center bg-danger text-white ">Login ou
+					senha inválidos!</p>
+			</div>
+			<div th:if="${param.logout}">
+				<p class="col-lg-3 text-center bg-danger text-white ">Você foi
+					disconectado!</p>
+			</div>
+			<div class="col-lg-12 my-5" align="center">
+				<form action="#" th:action="@{/login}" method="post" style="max-width: 700px;">
+					<div class="col-lg-6">
+						<input type="text" name="username"
+							class="text-center form-control" placeholder="E-mail">
+					</div>
+					<div class="form-group col-lg-6">
+						<input type="password" name="password"
+							class="text-center form-control" placeholder="Senha">
+					</div>
+					<div class="col-lg-6">
+						<button class="btn btn-dark w-100 py-3" type="submit">Login</button>
+						<a class="btn btn-sm btn-success w-100 py-3" th:href="@{/usuario}">Novo
+							Usúario</a>
+					</div>
+				</form>
+
 			</div>
 
-		</div>
-
-		<div class="row">
-			<form action="#" th:action="@{/login}" method="post"
-				style="max-width: 400px; margin: 0 auto;">
-				<p class="my-2 mx-2">
-					<input type="text" name="username" class="form-control"
-						placeholder="E-mail">
-				</p>
-				<p class="mx-2">
-					<input type="password" name="password" class="form-control"
-						placeholder="Senha">
-				</p>
-				<p>
-					<button class="btn btn-secondary" type="submit">Login</button>
-				</p>
-			</form>
 		</div>
 
 	</div>

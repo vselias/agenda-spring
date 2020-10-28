@@ -29,18 +29,23 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.app.dao.DocDAO;
+import com.example.app.dao.UserDAO;
 import com.example.app.entidade.Doc;
 import com.example.app.entidade.Pessoa;
+import com.example.app.entidade.Usuario;
 import com.example.app.service.PessoaService;
+import com.example.app.service.UsuarioService;
 
 @Controller
 public class PessoaController {
 
 	@Autowired
 	private PessoaService pessoaService;
-
 	@Autowired
 	private DocDAO docDAO;
+
+	@Autowired
+	private UsuarioService usuarioService;
 
 	@GetMapping("/pessoa")
 	public Pessoa pessoa(@RequestParam(value = "nome") String nome, @RequestParam(value = "tel") String telefone) {
@@ -66,14 +71,17 @@ public class PessoaController {
 	}
 
 	@GetMapping("/pessoas")
-	public String pessoas(Model model) {
-		model.addAttribute("pessoas", pessoaService.findAll());
+	public String pessoas(Model model, Authentication authentication) {
+		Usuario usuario = usuarioService.buscarUsuarioPorEmail(authentication.getName());
+		model.addAttribute("pessoas", pessoaService.buscarTodosPorUsuario(usuario.getId()));
 		return "pessoas";
 	}
 
 	@GetMapping("/pessoas/{page}")
 	public String pessoasPaginacao(@PathVariable(value = "page") int page, Model model) {
-		Page<Pessoa> pessoas = pessoaService.findPaging(page);
+		// Antigo
+		// Page<Pessoa> pessoas = pessoaService.findPaging(page);
+		Page<Pessoa> pessoas = pessoaService.buscarPaginacaoPorUsuario(page);
 		model.addAttribute("pessoas", pessoas.getContent());
 		model.addAttribute("numPaginas", pessoas.getTotalPages());
 		model.addAttribute("ativo", page);
@@ -84,7 +92,7 @@ public class PessoaController {
 	public String salvar(@Valid Pessoa pessoa, BindingResult bindingResult, Model model,
 			@RequestParam("arquivos") MultipartFile[] files) throws IOException {
 		if (pessoa.getId() != null) {
-			Pessoa findById = pessoaService.findById(pessoa.getId());
+			Pessoa findById = pessoaService.buscarPorId(pessoa.getId());
 			if (!pessoa.getEmail().equalsIgnoreCase(findById.getEmail())) {
 				if (bindingResult.hasFieldErrors("email")) {
 					model.addAttribute("msgEmail", true);
@@ -108,7 +116,7 @@ public class PessoaController {
 
 	@GetMapping("/edit/{id}")
 	public String edit(@PathVariable(name = "id") Long id, Model model) {
-		Pessoa pessoa = pessoaService.findById(id);
+		Pessoa pessoa = pessoaService.buscarPorId(id);
 		model.addAttribute("pessoa", pessoa);
 		System.out.println(pessoa.toString());
 		return "cadastro";
@@ -125,7 +133,7 @@ public class PessoaController {
 
 	@GetMapping("/del/{id}")
 	public String delete(@PathVariable(name = "id") Long id, RedirectAttributes ra) {
-		pessoaService.delete(pessoaService.findById(id));
+		pessoaService.remover(pessoaService.buscarPorId(id));
 		ra.addFlashAttribute("msgDelete", "Removido!");
 		return "redirect:/pessoas/1";
 	}
@@ -156,7 +164,7 @@ public class PessoaController {
 		}
 		return "redirect:/index";
 	}
-	
+
 	@GetMapping("/del-doc")
 	public String deleteDoc(@RequestParam(name = "id") Long id, RedirectAttributes ra) {
 		docDAO.deleteById(id);
@@ -164,6 +172,7 @@ public class PessoaController {
 		return "redirect:/pessoas/1";
 	}
 	
+	@Deprecated
 	@GetMapping("/user")
 	@ResponseBody
 	public String criarUser() {
@@ -181,4 +190,34 @@ public class PessoaController {
 		}
 		return "Usuário já criado!";
 	}
+	@Deprecated
+	@GetMapping("/username")
+	@ResponseBody
+	public String getUser(Authentication authentication) {
+		Usuario user = usuarioService.buscarUsuarioPorEmail(authentication.getName());
+		Pessoa p = new Pessoa();
+		p.setAtivo(true);
+		p.setEmail("pessoaDoUsuario@usuario.com");
+		p.setSenha("3232323232");
+		p.setNome("Pessoa Usuario");
+		user.getPessoas().add(p);
+		pessoaService.salvar(p, null);
+		return "salvo!";
+	}
+
+	@GetMapping("/usuario")
+	public String usuario(Model model) {
+		model.addAttribute("usuario", new Usuario());
+		return "usuario";
+	}
+
+	@PostMapping("/usuario")
+	public String salvarUsuario(Model model, @Valid Usuario usuario, BindingResult bindingResult) {
+		if (bindingResult.hasErrors())
+			return "usuario";
+		usuarioService.salvar(usuario);
+		model.addAttribute("msgUsuario", "Usuario cadastrado!");
+		return "usuario";
+	}
+
 }

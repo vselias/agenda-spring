@@ -8,14 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
-import com.example.app.dao.PessoaDAO;
+import com.example.app.dao.UserDAO;
 
 @Service
 @Transactional
 public class UniqueEmailValidator implements ConstraintValidator<UniqueEmail, String> {
 
+//	@Autowired
+//	private PessoaDAO pessoaDAO;
 	@Autowired
-	private PessoaDAO pessoaDAO;
+	private UserDAO userDAO;
 
 	@Override
 	public void initialize(UniqueEmail constraintAnnotation) {
@@ -24,10 +26,16 @@ public class UniqueEmailValidator implements ConstraintValidator<UniqueEmail, St
 
 	@Override
 	public boolean isValid(String email, ConstraintValidatorContext context) {
-		if(pessoaDAO == null) {
+//		if(pessoaDAO == null) {
+//			return true;
+//		}
+//		return pessoaDAO.buscarPessoaPorEmail(email) == null;
+		
+		if(userDAO == null) {
 			return true;
 		}
-		return pessoaDAO.buscarPessoaPorEmail(email) == null;
+		return userDAO.buscarUsuarioPorEmail(email) == null;
+		
 	}
 
 }

@@ -14,11 +14,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
@@ -36,8 +36,7 @@ public class Pessoa implements UserDetails, Serializable {
 	private String nome;
 	private String telefone;
 	@NotBlank(message = "{ATENÇÃO}: Informe um email!")
-	@Column(unique = true, nullable = false)
-	@UniqueEmail
+	@Column(nullable = false)
 	private String email;
 	private String sexo;
 	private boolean ativo;
@@ -52,6 +51,17 @@ public class Pessoa implements UserDetails, Serializable {
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "pessoa_id")
 	private List<Doc> docs;
+	@ManyToOne
+	@JoinColumn(name = "id_usuario")
+	private Usuario usuario;
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
 
 	public String getSenha() {
 		return senha;
