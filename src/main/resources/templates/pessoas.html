@@ -28,8 +28,7 @@
 								<th><a
 									th:href="@{'/sort/email?ordem='+ ${revDir}+'&pag='+${ativo} }">Email</a></th>
 								<th><a
-									th:href="@{'/sort/dataCadastro?ordem='+ ${revDir}+'&pag='+${ativo} }">Data
-										de Cadastro</a></th>
+									th:href="@{'/sort/dataCadastro?ordem='+ ${revDir}+'&pag='+${ativo} }">Cadastro</a></th>
 								<th><a
 									th:href="@{'/sort/sexo?ordem='+ ${revDir}+'&pag='+${ativo} }">Sexo</a></th>
 								<th><a
@@ -120,7 +119,7 @@
 								<tr>
 									<th>Id</th>
 									<th>Nome</th>
-									<th>Data de Cadastro</th>
+									<th>Cadastro</th>
 									<th>Ativo</th>
 									<th>Arquivos</th>
 								</tr>
@@ -143,7 +142,7 @@
 																	th:text="${doc.nomeArquivo}" />
 															</a>
 														</div>
-														<div class="col-lg-5 px-0">
+														<div class="col-lg-5">
 															<a onclick="return confirm('Deseja excluir?')" th:href="@{'/del-doc?id='+${doc.id}}" class="btn btn-sm btn-danger"> Remover 
 																<svg
 																width="1em" height="1em" viewBox="0 0 16 16"
