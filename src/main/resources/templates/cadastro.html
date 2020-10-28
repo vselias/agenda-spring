@@ -33,16 +33,8 @@
 								<label style="text-align: left">e-Mail:</label> <input
 									class="form-control" type="email" th:field="${pessoa.email}"
 									name="email">
-								<div th:each="err : ${#fields.errors('email')}">
-									<p th:text="${err}" class="bg-danger text-white text-center"
-										th:if="${err} eq '{ATENÇÃO}: Email já cadastrado!' and ${msgEmail} eq true">
-									</p>
-									<p th:text="${err}" class="bg-danger text-white text-center"
-										th:if="${err} eq '{ATENÇÃO}: Email já cadastrado!' and ${pessoa.id} eq null">
-									</p>
-									<p th:text="${err}" class="bg-danger text-white text-center"
-										th:if="${err} eq '{ATENÇÃO}: Informe um email!'"></p>
-								</div>
+									<div class="bg-danger text-white text-center"
+									th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
 							</div>
 							<div class="form-group  col-lg-6">
 								<label>Data de Cadastro:</label> <input class="form-control "

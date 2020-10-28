@@ -91,24 +91,11 @@ public class PessoaController {
 	@PostMapping("/salvar")
 	public String salvar(@Valid Pessoa pessoa, BindingResult bindingResult, Model model,
 			@RequestParam("arquivos") MultipartFile[] files) throws IOException {
-		if (pessoa.getId() != null) {
-			Pessoa findById = pessoaService.buscarPorId(pessoa.getId());
-			if (!pessoa.getEmail().equalsIgnoreCase(findById.getEmail())) {
-				if (bindingResult.hasFieldErrors("email")) {
-					model.addAttribute("msgEmail", true);
-					return "cadastro";
-				}
-			}
-			for (FieldError field : bindingResult.getFieldErrors()) {
-				System.out.println(field.getCode());
-				if (!field.getCode().equals("UniqueEmail"))
-					return "cadastro";
-			}
-		} else {
-			if (bindingResult.hasErrors()) {
-				return "cadastro";
-			}
+
+		if (bindingResult.hasErrors()) {
+			return "cadastro";
 		}
+
 		model.addAttribute("msgCadastro", pessoa.getId() == null ? "Cadastrado!" : "Atualizado!");
 		pessoaService.salvar(pessoa, files);
 		return "cadastro";
