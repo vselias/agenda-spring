@@ -80,7 +80,7 @@
 					</table>
 
 					<div class="row justify-content-center">
-						<nav th:if="${numPaginas} ne null"
+						<nav th:if="${not #lists.isEmpty(pessoas)}"
 							aria-label="Navegação de página exemplo">
 							<ul class="pagination">
 								<li class="page-item"><a class="btn btn-info"
