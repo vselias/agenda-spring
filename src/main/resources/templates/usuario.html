@@ -34,7 +34,7 @@ body {
 							th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
 					</div>
 					<div class="form-group col-lg-6">
-						<input class="form-control text-center" th:field="*{senha}"
+						<input class="form-control text-center" type="password" th:field="*{senha}"
 							placeholder="Senha" />
 						<div class="bg-danger text-white text-center"
 							th:if="${#fields.hasErrors('senha')}" th:errors="*{senha}"></div>
