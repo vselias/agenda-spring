@@ -40,6 +40,7 @@ $(function() {
 		carregarEstados();
 		
 		*/
+
 	function carregarEstados() {
 		$.getJSON("/json/estados-cidades.json", function(data) {
 			$.each(data.estados, function(i, item) {
@@ -76,7 +77,7 @@ $(function() {
 			});
 		});
 	});
-	
+
 	var setDefaultActive = function() {
 		var path = window.location.pathname;
 		console.log(path);
@@ -87,5 +88,7 @@ $(function() {
 	setDefaultActive();
 
 	carregarEstados();
+
+
 
 });

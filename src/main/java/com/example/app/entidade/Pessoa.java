@@ -2,7 +2,6 @@ package com.example.app.entidade;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -20,11 +19,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
 
+import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import com.example.app.validators.UniqueEmail;
 
 @Entity
 public class Pessoa implements Serializable {
@@ -33,6 +29,8 @@ public class Pessoa implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	@Length(min = 10, max = 40, message = "Mínimo de 10 e máximo 50 caracters.")
+	@Column(length = 50)
 	private String nome;
 	private String telefone;
 	@NotBlank(message = "{ATENÇÃO}: Informe um email!")
