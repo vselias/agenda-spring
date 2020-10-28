@@ -33,6 +33,7 @@ public class Usuario implements UserDetails {
 	@Column(unique = true, nullable = false)
 	private String email;
 	@NotBlank(message = "{ATENÇÃO}: Informe uma senha!")
+	@Column(nullable = false)
 	private String senha;
 
 	@OneToMany(mappedBy = "usuario")
