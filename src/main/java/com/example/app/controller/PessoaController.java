@@ -233,7 +233,7 @@ public class PessoaController {
 		String tbody = "<tbody>";
 		String tbodyFile = "<tbody>";
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		
+		String sexo = "";
 		//primeira tabela
 		for (Pessoa pessoa : pesquisa) {
 			tbody += "<tr>";
@@ -241,8 +241,15 @@ public class PessoaController {
 			tbody+="<td>"+pessoa.getNome()+"</td>";
 			tbody+="<td>"+pessoa.getEmail()+"</td>";
 			tbody+="<td>"+sdf.format(pessoa.getDataCadastro())+"</td>";
-			tbody+="<td>"+pessoa.getSexo()+"</td>";
-			tbody+="<td>"+pessoa.isAtivo()+"</td>";
+			if(pessoa.getSexo().equals("M")) {
+				sexo = "Masculino";
+			}else if(pessoa.getSexo().equals("F")) {
+				sexo = "Feminino";
+			}else if(pessoa.getSexo().equals("N")) {
+				sexo = "Neutro";
+			}
+			tbody+="<td>"+ sexo +"</td>";
+			tbody+="<td>"+(pessoa.isAtivo() ? "Ativo":"Desativado") +"</td>";
 			tbody+="<td>"+pessoa.getCidade()+"</td>";
 			tbody+="<td>"+pessoa.getEstado()+"</td>";
 			tbody+="<td class='text-center'>";
