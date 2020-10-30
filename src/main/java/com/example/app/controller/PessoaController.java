@@ -84,12 +84,9 @@ public class PessoaController {
 	}
 
 	@GetMapping("/pessoas/{page}")
-	public String pessoasPaginacao(@PathVariable(value = "page") int page, Model model, Authentication authentication) {
+	public String pessoasPaginacao(@PathVariable(value = "page") int page, Model model) {
 		// Antigo
 		// Page<Pessoa> pessoas = pessoaService.findPaging(page);
-		Usuario usuario = usuarioService.buscarUsuarioPorEmail(authentication.getName());
-		if (usuario != null)
-			model.addAttribute("role", usuario.getRole());
 		Page<Pessoa> pessoas = pessoaService.buscarPaginacaoPorUsuario(page);
 		model.addAttribute("pessoas", pessoas.getContent());
 		model.addAttribute("numPaginas", pessoas.getTotalPages());
