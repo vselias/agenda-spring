@@ -124,7 +124,7 @@
 									<th>Nome</th>
 									<th>Cadastro</th>
 									<th>Ativo</th>
-									<th>Arquivos</th>
+									<th class="text-center">Arquivos</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -136,9 +136,9 @@
 									</td>
 									<td th:text="${pessoa.ativo}? 'Ativo': 'Desativado'"></td>
 									<td style="width: 350px;" align="center">
-										<table>
+										<table class="w-100">
 											<tr th:each="doc : ${pessoa.docs}">
-												<td class="w-100">
+												<td >
 													<div class="row">
 														<div  class="col-sm-7">
 															<strong>Download:</strong> <br /> <a
