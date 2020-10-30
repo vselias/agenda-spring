@@ -27,6 +27,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -83,13 +84,17 @@ public class PessoaController {
 	}
 
 	@GetMapping("/pessoas/{page}")
-	public String pessoasPaginacao(@PathVariable(value = "page") int page, Model model) {
+	public String pessoasPaginacao(@PathVariable(value = "page") int page, Model model, Authentication authentication) {
 		// Antigo
 		// Page<Pessoa> pessoas = pessoaService.findPaging(page);
+		Usuario usuario = usuarioService.buscarUsuarioPorEmail(authentication.getName());
+		if (usuario != null)
+			model.addAttribute("role", usuario.getRole());
 		Page<Pessoa> pessoas = pessoaService.buscarPaginacaoPorUsuario(page);
 		model.addAttribute("pessoas", pessoas.getContent());
 		model.addAttribute("numPaginas", pessoas.getTotalPages());
 		model.addAttribute("ativo", page);
+
 		return "pessoas";
 	}
 
@@ -106,7 +111,7 @@ public class PessoaController {
 		return "cadastro";
 	}
 
-	@GetMapping("/edit/{id}")
+	@GetMapping(value= "/edit/{id}")
 	public String edit(@PathVariable(name = "id") Long id, Model model) {
 		Pessoa pessoa = pessoaService.buscarPorId(id);
 		model.addAttribute("pessoa", pessoa);
@@ -210,6 +215,7 @@ public class PessoaController {
 		model.addAttribute("msgUsuario", "Usuario cadastrado!");
 		return "usuario";
 	}
+
 	@ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
 	public String erro() {
 		return "erro";

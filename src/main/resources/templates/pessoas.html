@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
 <meta charset="utf-8">
 <title>Lista de Pessoas</title>
@@ -8,6 +9,7 @@
 <body>
 
 	<div class="container-fluid">
+
 		<nav th:replace="navbar"></nav>
 		<div class="row justify-content-center">
 			<div class="col-lg-12">
@@ -111,7 +113,8 @@
 					</div>
 				</div>
 				<div class="row justify-content-center">
-					<p th:if="${msgDoc}" th:text="${msgDoc}" class="bg-danger text-white text-center h5"></p>
+					<p th:if="${msgDoc}" th:text="${msgDoc}"
+						class="bg-danger text-white text-center h5"></p>
 					<h3 class="col-lg-12 text-center my-3">Lista de Arquivos</h3>
 					<div class="col-lg-10">
 						<table class="table table-striped ">
@@ -132,29 +135,32 @@
 										th:text="${pessoa.dataCadastro} ? ${#dates.format(pessoa.dataCadastro, 'dd/MM/yyyy')}: 'N/A'">
 									</td>
 									<td th:text="${pessoa.ativo}? 'Ativo': 'Desativado'"></td>
-									<td style="max-width: 300px;" align="center">
-										<table style="max-width: 300px;">
+									<td style="width: 350px;" align="center">
+										<table>
 											<tr th:each="doc : ${pessoa.docs}">
-												<td >
+												<td class="w-100">
 													<div class="row">
-														<div class="col-sm-7">
-															<strong>Download:</strong> 
-															<br />
-															<a style="word-wrap: break-word;" class="bg-primary text-white" th:href="@{'/download/'+${doc.id}}"> 
-																<th:block 
+														<div  class="col-sm-7">
+															<strong>Download:</strong> <br /> <a
+																style="word-wrap: break-word;"
+																class="bg-primary text-white"
+																th:href="@{'/download/'+${doc.id}}"> <th:block
 																	th:text="${doc.nomeArquivo}" />
 															</a>
 														</div>
-														<div class="col-sm-5 align-items-center">
-															<a onclick="return confirm('Deseja excluir?')" th:href="@{'/del-doc?id='+${doc.id}}" class="btn btn-sm btn-danger"> Remover 
-																<svg
-																width="1em" height="1em" viewBox="0 0 16 16"
-																class="bi bi-trash" fill="currentColor"
-																xmlns="http://www.w3.org/2000/svg">
+
+														<div 
+															class="col-sm-5 d-flex align-items-center">
+															<a onclick="return confirm('Deseja excluir?')"
+																th:href="@{'/del-doc?id='+${doc.id}}"
+																class="btn btn-sm btn-danger"> Remover <svg
+																	width="1em" height="1em" viewBox="0 0 16 16"
+																	class="bi bi-trash" fill="currentColor"
+																	xmlns="http://www.w3.org/2000/svg">
 															  <path
-																	d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+																		d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
 															  <path fill-rule="evenodd"
-																	d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+																		d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
 																</svg>
 															</a>
 														</div>
@@ -162,7 +168,8 @@
 												</td>
 											</tr>
 											<tr th:if="${#lists.isEmpty(pessoa.docs)}">
-												<td><p class="text-center" align="center">Sem Arquivos.</p></td>
+												<td><p class="text-center" align="center">Sem
+														Arquivos.</p></td>
 											</tr>
 										</table>
 									</td>

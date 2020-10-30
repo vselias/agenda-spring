@@ -11,7 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -107,7 +106,7 @@ public class PessoaServiceImpl implements PessoaService {
 	public List<Pessoa> buscarTodosPorUsuario(Long id) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		Usuario user = userDAO.buscarUsuarioPorEmail(authentication.getName());
-		return null;
+		return pessoaDAO.buscarTodosPorUsuario(user.getId());
 	}
 
 	@Override
@@ -115,7 +114,7 @@ public class PessoaServiceImpl implements PessoaService {
 		Usuario usuario = userDAO
 				.buscarUsuarioPorEmail(SecurityContextHolder.getContext().getAuthentication().getName());
 		Pageable paginacao = PageRequest.of(page - 1, 5);
-		Page<Pessoa> pessoas = pessoaDAO.buscarTodosPorUsuario(usuario.getId(), paginacao);
+		Page<Pessoa> pessoas = pessoaDAO.buscarTodosPorUsuarioPag(usuario.getId(), paginacao);
 		return pessoas;
 	}
 

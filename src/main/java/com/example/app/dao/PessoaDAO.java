@@ -19,9 +19,12 @@ public interface PessoaDAO extends PagingAndSortingRepository<Pessoa, Long> {
 	public Pessoa buscarPessoaPorEmail(@Param("email") String email);
 	
 	@Query("SELECT p from Usuario u join u.pessoas p where u.id = :id")
-	public Page<Pessoa> buscarTodosPorUsuario(@Param("id") Long id, Pageable pageable);
+	public Page<Pessoa> buscarTodosPorUsuarioPag(@Param("id") Long id, Pageable pageable);
 	
 	@Query("SELECT p from Pessoa p join p.usuario u where u.id = :id")
 	public Page<Pessoa> buscarTodosPorUsuarioOrdenacao(@Param("id") Long id, Pageable pageable);
+	
+	@Query("SELECT p from Pessoa p join p.usuario u where u.id = :id")
+	public List<Pessoa> buscarTodosPorUsuario(@Param("id") Long id);
 
 }
