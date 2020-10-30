@@ -118,4 +118,9 @@ public class PessoaServiceImpl implements PessoaService {
 		return pessoas;
 	}
 
+	@Override
+	public Page<Pessoa> buscarPorNome(String texto, Long id) {
+		return pessoaDAO.buscarPorNome(texto, id ,PageRequest.of(0, 5));
+	}
+
 }

@@ -17,7 +17,7 @@ import com.example.app.entidade.Usuario;
 public class UserDetailServiceImpl implements UserDetailsService {
 //	@Autowired
 //	private PessoaDAO pessoaDAO;
-	
+
 	@Autowired
 	private UserDAO userDAO;
 
@@ -28,10 +28,8 @@ public class UserDetailServiceImpl implements UserDetailsService {
 		if (usuario == null) {
 			throw new UsernameNotFoundException("Could not find user");
 		}
-		GrantedAuthority grantedAuthority = new SimpleGrantedAuthority("ROLE_USER");
-		List<GrantedAuthority> lista = new ArrayList<>();
-		lista.add(grantedAuthority);
-		UserDetails userDetails = (UserDetails) new User(usuario.getEmail(), usuario.getSenha(), lista);
+		
+		UserDetails userDetails = (UserDetails) new User(usuario.getEmail(), usuario.getSenha(), usuario.getAuthorities());
 		return userDetails;
 	}
 

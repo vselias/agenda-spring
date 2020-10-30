@@ -88,7 +88,22 @@ $(function() {
 	setDefaultActive();
 
 	carregarEstados();
-
-
-
+	$('#pesquisa').keyup(function() {
+		var texto = $(this).val();
+		var pagina = $('a.page-link').length;
+		$.ajax({
+			type: "GET",
+			url: "/pesquisa",
+			data: {
+				texto: texto,
+				pagina: pagina
+			},
+			success: function(response){
+				console.log(response.tbody);
+				$('.table-pessoas tbody').replaceWith(response.tbody);
+				console.log(response.tbodyFile);
+				$('.table-arquivos tbody').replaceWith(response.tbodyFile);
+			}
+		});
+	});
 });

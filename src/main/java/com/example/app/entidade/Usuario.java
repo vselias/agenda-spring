@@ -13,7 +13,9 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import org.springframework.security.config.core.GrantedAuthorityDefaults;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.example.app.validators.UniqueEmail;
@@ -35,9 +37,20 @@ public class Usuario implements UserDetails {
 	@NotBlank(message = "{ATENÇÃO}: Informe uma senha!")
 	@Column(nullable = false)
 	private String senha;
+	private String role;
 
 	@OneToMany(mappedBy = "usuario")
 	private List<Pessoa> pessoas;
+
+	
+	
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
 
 	public List<Pessoa> getPessoas() {
 		return pessoas;
@@ -77,7 +90,9 @@ public class Usuario implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return null;
+		List<GrantedAuthority> lista = new ArrayList<GrantedAuthority>();
+		lista.add(new SimpleGrantedAuthority(this.getRole()));
+		return lista;
 	}
 
 	@Override

@@ -1,12 +1,17 @@
 package com.example.app.controller;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.core.io.ByteArrayResource;
@@ -41,6 +46,7 @@ import com.example.app.entidade.Pessoa;
 import com.example.app.entidade.Usuario;
 import com.example.app.service.PessoaService;
 import com.example.app.service.UsuarioService;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 
 @Controller
 public class PessoaController {
@@ -108,7 +114,7 @@ public class PessoaController {
 		return "cadastro";
 	}
 
-	@GetMapping(value= "/edit/{id}")
+	@GetMapping(value = "/edit/{id}")
 	public String edit(@PathVariable(name = "id") Long id, Model model) {
 		Pessoa pessoa = pessoaService.buscarPorId(id);
 		model.addAttribute("pessoa", pessoa);
@@ -216,6 +222,79 @@ public class PessoaController {
 	@ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
 	public String erro() {
 		return "erro";
+	}
+
+	@GetMapping(value = "/pesquisa")
+	@ResponseBody
+	public Map<String,String> pesquisa(@RequestParam(value = "texto") String texto, @RequestParam("pagina") int pagina,
+			Authentication authentication) {
+		Usuario usuario = usuarioService.buscarUsuarioPorEmail(authentication.getName());
+		Page<Pessoa> pesquisa = pessoaService.buscarPorNome(texto, usuario.getId());
+		String tbody = "<tbody>";
+		String tbodyFile = "<tbody>";
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		
+		//primeira tabela
+		for (Pessoa pessoa : pesquisa) {
+			tbody += "<tr>";
+			tbody+="<td>"+pessoa.getId()+"</td>";
+			tbody+="<td>"+pessoa.getNome()+"</td>";
+			tbody+="<td>"+pessoa.getEmail()+"</td>";
+			tbody+="<td>"+sdf.format(pessoa.getDataCadastro())+"</td>";
+			tbody+="<td>"+pessoa.getSexo()+"</td>";
+			tbody+="<td>"+pessoa.isAtivo()+"</td>";
+			tbody+="<td>"+pessoa.getCidade()+"</td>";
+			tbody+="<td>"+pessoa.getEstado()+"</td>";
+			tbody+="<td class='text-center'>";
+				tbody+="<a class='btn btn-sm btn-primary mr-1' href='/edit/"+pessoa.getId()+"'><i class='fas fa-pencil-alt'></i> Editar</a>";
+				tbody+="<a class='btn btn-sm btn-danger' href='/del/"+pessoa.getId()+"'><i class='fas fa-trash-alt'></i> Remover</a>";
+			tbody+="</td>";
+			tbody += "</tr>";
+		}
+		if(pesquisa.getContent().isEmpty()) {
+			tbody+="<tr><td colspan='9' class='text-center h6'>Nenhum registro encontrado...</td></tr>";
+		}
+		tbody += "</tbody>";
+		//fim primeira tabela
+		
+		//segunda tabela
+		for (Pessoa pessoa : pesquisa) {
+			tbodyFile += "<tr>";
+			tbodyFile+="<td>"+pessoa.getId()+"</td>";
+			tbodyFile+="<td>"+pessoa.getNome()+"</td>";
+			tbodyFile+="<td>"+sdf.format(pessoa.getDataCadastro())+"</td>";
+			tbodyFile+="<td>"+ (pessoa.isAtivo() ? "Ativo": "Desativado") +"</td>";
+			tbodyFile+="<td align='center' style='width:350px'><table class='w-100'>";
+				for (Doc doc : pessoa.getDocs()) {
+					tbodyFile+="<tr><td><div class='row'>";
+					tbodyFile+="<div class='col-sm-7'>"
+							+ "	<strong>Download:</strong> <br /> <a"
+							+ "	style='word-wrap: break-word;'"
+							+ "	class='bg-primary text-white'"
+							+ " href='/download/"+doc.getId()+"'>"+doc.getNomeArquivo()
+							+ "	</a>"
+							+ "</div>";
+					tbodyFile+="<div class='col-sm-5 d-flex align-items-center'>"
+							+ "	<a onclick='return confirm(\"Deseja excluir?\")'"
+							+ "	href='/del-doc?id="+doc.getId()+"'"
+							+ "	class='btn btn-sm btn-danger'> <i "
+							+ "	class='fas fa-trash-alt'></i> Remover "
+							+ "	</a>"
+							+ "	</div>";
+					tbodyFile+="</div></td></tr>";
+				}
+				if(pessoa.getDocs().isEmpty()) {
+					tbodyFile+="<tr><td><p class='text-center' align='center'>Sem Arquivos</p></td></tr>";
+				}
+			tbodyFile+="</table></td></tr>";
+		}
+		tbodyFile+="</tbody>";
+		//fim segunda tabela
+		
+		HashMap<String, String> json = new HashMap<String, String>();
+		json.put("tbody", tbody);
+		json.put("tbodyFile", tbodyFile);
+		return json;
 	}
 
 }
