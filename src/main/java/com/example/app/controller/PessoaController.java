@@ -4,16 +4,11 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
@@ -28,11 +23,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -40,13 +33,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.app.dao.DocDAO;
-import com.example.app.dao.UserDAO;
 import com.example.app.entidade.Doc;
 import com.example.app.entidade.Pessoa;
 import com.example.app.entidade.Usuario;
 import com.example.app.service.PessoaService;
 import com.example.app.service.UsuarioService;
-import com.fasterxml.jackson.databind.util.JSONPObject;
 
 @Controller
 public class PessoaController {
@@ -226,7 +217,7 @@ public class PessoaController {
 
 	@GetMapping(value = "/pesquisa")
 	@ResponseBody
-	public Map<String,String> pesquisa(@RequestParam(value = "texto") String texto, @RequestParam("pagina") int pagina,
+	public Map<String, String> pesquisa(@RequestParam(value = "texto") String texto, @RequestParam("pagina") int pagina,
 			Authentication authentication) {
 		Usuario usuario = usuarioService.buscarUsuarioPorEmail(authentication.getName());
 		Page<Pessoa> pesquisa = pessoaService.buscarPorNome(texto, usuario.getId());
@@ -234,70 +225,67 @@ public class PessoaController {
 		String tbodyFile = "<tbody>";
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		String sexo = "";
-		//primeira tabela
+		// primeira tabela
 		for (Pessoa pessoa : pesquisa) {
 			tbody += "<tr>";
-			tbody+="<td>"+pessoa.getId()+"</td>";
-			tbody+="<td>"+pessoa.getNome()+"</td>";
-			tbody+="<td>"+pessoa.getEmail()+"</td>";
-			tbody+="<td>"+sdf.format(pessoa.getDataCadastro())+"</td>";
-			if(pessoa.getSexo().equals("M")) {
+			tbody += "<td>" + pessoa.getId() + "</td>";
+			tbody += "<td>" + pessoa.getNome() + "</td>";
+			tbody += "<td>" + pessoa.getEmail() + "</td>";
+			tbody += "<td>" + sdf.format(pessoa.getDataCadastro()) + "</td>";
+			if (pessoa.getSexo().equals("M")) {
 				sexo = "Masculino";
-			}else if(pessoa.getSexo().equals("F")) {
+			} else if (pessoa.getSexo().equals("F")) {
 				sexo = "Feminino";
-			}else if(pessoa.getSexo().equals("N")) {
+			} else if (pessoa.getSexo().equals("N")) {
 				sexo = "Neutro";
 			}
-			tbody+="<td>"+ sexo +"</td>";
-			tbody+="<td>"+(pessoa.isAtivo() ? "Ativo":"Desativado") +"</td>";
-			tbody+="<td>"+pessoa.getCidade()+"</td>";
-			tbody+="<td>"+pessoa.getEstado()+"</td>";
-			tbody+="<td class='text-center'>";
-				tbody+="<a class='btn btn-sm btn-primary mr-1' href='/edit/"+pessoa.getId()+"'><i class='fas fa-pencil-alt'></i> Editar</a>";
-				tbody+="<a class='btn btn-sm btn-danger' href='/del/"+pessoa.getId()+"'><i class='fas fa-trash-alt'></i> Remover</a>";
-			tbody+="</td>";
+			tbody += "<td>" + sexo + "</td>";
+			tbody += "<td>" + (pessoa.isAtivo() ? "Ativo" : "Desativado") + "</td>";
+			tbody += "<td>" + pessoa.getCidade() + "</td>";
+			tbody += "<td>" + pessoa.getEstado() + "</td>";
+			tbody += "<td class='text-center'>";
+			tbody += "<a class='btn btn-sm btn-primary mr-1' href='/edit/" + pessoa.getId()
+					+ "'><i class='fas fa-pencil-alt'></i> Editar</a>";
+			tbody += "<a class='btn btn-sm btn-danger' href='/del/" + pessoa.getId()
+					+ "'><i class='fas fa-trash-alt'></i> Remover</a>";
+			tbody += "</td>";
 			tbody += "</tr>";
 		}
-		if(pesquisa.getContent().isEmpty()) {
-			tbody+="<tr><td colspan='9' class='text-center h6'>Nenhum registro encontrado...</td></tr>";
+		if (pesquisa.getContent().isEmpty()) {
+			tbody += "<tr><td colspan='9' class='text-center h6'>Nenhum registro encontrado...</td></tr>";
 		}
 		tbody += "</tbody>";
-		//fim primeira tabela
-		
-		//segunda tabela
+		// fim primeira tabela
+
+		// segunda tabela
 		for (Pessoa pessoa : pesquisa) {
 			tbodyFile += "<tr>";
-			tbodyFile+="<td>"+pessoa.getId()+"</td>";
-			tbodyFile+="<td>"+pessoa.getNome()+"</td>";
-			tbodyFile+="<td>"+sdf.format(pessoa.getDataCadastro())+"</td>";
-			tbodyFile+="<td>"+ (pessoa.isAtivo() ? "Ativo": "Desativado") +"</td>";
-			tbodyFile+="<td align='center' style='width:350px'><table class='w-100'>";
-				for (Doc doc : pessoa.getDocs()) {
-					tbodyFile+="<tr><td><div class='row'>";
-					tbodyFile+="<div class='col-sm-7'>"
-							+ "	<strong>Download:</strong> <br /> <a"
-							+ "	style='word-wrap: break-word;'"
-							+ "	class='bg-primary text-white'"
-							+ " href='/download/"+doc.getId()+"'>"+doc.getNomeArquivo()
-							+ "	</a>"
-							+ "</div>";
-					tbodyFile+="<div class='col-sm-5 d-flex align-items-center'>"
-							+ "	<a onclick='return confirm(\"Deseja excluir?\")'"
-							+ "	href='/del-doc?id="+doc.getId()+"'"
-							+ "	class='btn btn-sm btn-danger'> <i "
-							+ "	class='fas fa-trash-alt'></i> Remover "
-							+ "	</a>"
-							+ "	</div>";
-					tbodyFile+="</div></td></tr>";
-				}
-				if(pessoa.getDocs().isEmpty()) {
-					tbodyFile+="<tr><td><p class='text-center' align='center'>Sem Arquivos</p></td></tr>";
-				}
-			tbodyFile+="</table></td></tr>";
+			tbodyFile += "<td>" + pessoa.getId() + "</td>";
+			tbodyFile += "<td>" + pessoa.getNome() + "</td>";
+			tbodyFile += "<td>" + sdf.format(pessoa.getDataCadastro()) + "</td>";
+			tbodyFile += "<td>" + (pessoa.isAtivo() ? "Ativo" : "Desativado") + "</td>";
+			tbodyFile += "<td align='center' style='width:350px'><table class='w-100'>";
+			for (Doc doc : pessoa.getDocs()) {
+				tbodyFile += "<tr><td><div class='row'>";
+				//div btn Download
+				tbodyFile += "<div class='col-sm-7'> <strong>Download:</strong> <br /> <a"
+						+ "	style='word-wrap: break-word;' class='bg-primary text-white' href='/download/"
+						+ doc.getId() + "'>" + doc.getNomeArquivo() + "	</a></div>";
+				//div btn Delete Download
+				tbodyFile += "<div class='col-sm-5 d-flex align-items-center'>"
+						+ "	<a onclick='return confirm(\"Deseja excluir?\")' href='/del-doc?id=" + doc.getId()
+						+ "'" + "	class='btn btn-sm btn-danger'> <i class='fas fa-trash-alt'></i> Remover "
+						+ "	</a>  </div>";
+				tbodyFile += "</div></td></tr>";
+			}
+			if (pessoa.getDocs().isEmpty()) {
+				tbodyFile += "<tr><td><p class='text-center' align='center'>Sem Arquivos</p></td></tr>";
+			}
+			tbodyFile += "</table></td></tr>";
 		}
-		tbodyFile+="</tbody>";
-		//fim segunda tabela
-		
+		tbodyFile += "</tbody>";
+		// fim segunda tabela
+
 		HashMap<String, String> json = new HashMap<String, String>();
 		json.put("tbody", tbody);
 		json.put("tbodyFile", tbodyFile);

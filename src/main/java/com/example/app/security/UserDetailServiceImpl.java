@@ -28,8 +28,11 @@ public class UserDetailServiceImpl implements UserDetailsService {
 		if (usuario == null) {
 			throw new UsernameNotFoundException("Could not find user");
 		}
+		List<GrantedAuthority> lista = new ArrayList<GrantedAuthority>();
+		lista.add(new SimpleGrantedAuthority(usuario.getRole()));
 		
-		UserDetails userDetails = (UserDetails) new User(usuario.getEmail(), usuario.getSenha(), usuario.getAuthorities());
+		
+		UserDetails userDetails = (UserDetails) new User(usuario.getEmail(), usuario.getSenha(),lista);
 		return userDetails;
 	}
 
