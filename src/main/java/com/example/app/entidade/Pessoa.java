@@ -29,14 +29,14 @@ public class Pessoa implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	@Length(min = 10, max = 40, message = "Mínimo de 6 e máximo 40 caracters.")
+	@NotBlank(message = "Informe um nome!")
+	@Length(min = 6, max = 40, message = "Min de 6 e Max 40 caracters.")
 	@Column(length = 50, nullable = false)
-	@NotBlank(message = "{ATENÇÃO}: Informe um nome")
 	private String nome;
 	private String telefone;
-	@NotBlank(message = "{ATENÇÃO}: Informe um email!")
+	@NotBlank(message = "Informe um email!")
+	@Length(min = 10, max = 40, message = "Min 10 e Max 40 caracters.")
 	@Column(nullable = false)
-	@Length(min = 10, max = 40, message = "Mínimo de 10 e máximo 40 caracters.")
 	private String email;
 	private String sexo;
 	private boolean ativo;

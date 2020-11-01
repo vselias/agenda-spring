@@ -23,6 +23,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -217,7 +218,7 @@ public class PessoaController {
 
 	@GetMapping(value = "/pesquisa")
 	@ResponseBody
-	public Map<String, String> pesquisa(@RequestParam(value = "texto") String texto, @RequestParam("pagina") int pagina,
+	public Map<String, String> pesquisa(@RequestParam(value = "texto") String texto,
 			Authentication authentication) {
 		Usuario usuario = usuarioService.buscarUsuarioPorEmail(authentication.getName());
 		Page<Pessoa> pesquisa = pessoaService.buscarPorNome(texto, usuario.getId());
@@ -229,8 +230,8 @@ public class PessoaController {
 		for (Pessoa pessoa : pesquisa) {
 			tbody += "<tr>";
 			tbody += "<td>" + pessoa.getId() + "</td>";
-			tbody += "<td>" + pessoa.getNome() + "</td>";
-			tbody += "<td>" + pessoa.getEmail() + "</td>";
+			tbody += "<td style='width: 230px' class='text-break'>" + pessoa.getNome() + "</td>";
+			tbody += "<td class='text-break'>" + pessoa.getEmail() + "</td>";
 			tbody += "<td>" + sdf.format(pessoa.getDataCadastro()) + "</td>";
 			if (pessoa.getSexo().equals("M")) {
 				sexo = "Masculino";
@@ -245,14 +246,15 @@ public class PessoaController {
 			tbody += "<td>" + pessoa.getEstado() + "</td>";
 			tbody += "<td class='text-center'>";
 			tbody += "<a class='btn btn-sm btn-primary mr-1' href='/edit/" + pessoa.getId()
-					+ "'><i class='fas fa-pencil-alt'></i> Editar</a>";
+					+ "'><i class='fas fa-pencil-alt'></i></a>";
 			tbody += "<a class='btn btn-sm btn-danger' href='/del/" + pessoa.getId()
-					+ "'><i class='fas fa-trash-alt'></i> Remover</a>";
+					+ "'><i class='fas fa-trash-alt'></i></a>";
 			tbody += "</td>";
 			tbody += "</tr>";
 		}
 		if (pesquisa.getContent().isEmpty()) {
 			tbody += "<tr><td colspan='9' class='text-center h6'>Nenhum registro encontrado...</td></tr>";
+			tbodyFile += "<tr><td colspan='9' class='text-center h6'>Nenhum registro encontrado...</td></tr>";
 		}
 		tbody += "</tbody>";
 		// fim primeira tabela
@@ -269,12 +271,12 @@ public class PessoaController {
 				tbodyFile += "<tr><td><div class='row'>";
 				//div btn Download
 				tbodyFile += "<div class='col-sm-7'> <strong>Download:</strong> <br /> <a"
-						+ "	style='word-wrap: break-word;' class='bg-primary text-white' href='/download/"
+						+ "	style='word-wrap: break-word;'  href='/download/"
 						+ doc.getId() + "'>" + doc.getNomeArquivo() + "	</a></div>";
 				//div btn Delete Download
 				tbodyFile += "<div class='col-sm-5 d-flex align-items-center'>"
 						+ "	<a onclick='return confirm(\"Deseja excluir?\")' href='/del-doc?id=" + doc.getId()
-						+ "'" + "	class='btn btn-sm btn-danger'> <i class='fas fa-trash-alt'></i> Remover "
+						+ "' class='btn btn-sm btn-danger'> <i class='fas fa-trash-alt'></i>"
 						+ "	</a>  </div>";
 				tbodyFile += "</div></td></tr>";
 			}

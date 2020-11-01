@@ -11,7 +11,6 @@
 	background-repeat: no-repeat;
 	background-size: 16px 16px;
 	background-position: right 10px center;
-	
 }
 </style>
 </head>
@@ -32,35 +31,45 @@
 				<div class="text-danger text-center" th:if="${msgDelete ne null}">
 					<p th:text="${msgDelete}"></p>
 				</div>
-
+				
 				<div class="col-lg-12">
-					<table class="table-pessoas table table-striped">
+					<table class="table-pessoas table-bordered table table-striped">
 						<thead>
 							<tr>
 								<th><a
-									th:href="@{'/sort/id?ordem='+ ${revDir}+'&pag='+${ativo} }">Id</a></th>
+									th:href="@{'/sort/id?ordem='+ ${revDir}+'&pag='+${ativo} }">
+										Id<i class="px-1 fas fa-sort-alpha-down"></i>
+								</a></th>
 								<th><a
-									th:href="@{'/sort/nome?ordem='+ ${revDir}+'&pag='+${ativo} }">Nome</a></th>
+									th:href="@{'/sort/nome?ordem='+ ${revDir}+'&pag='+${ativo} }">
+										Nome<i class="px-1 fas fa-sort-alpha-down"></i>
+								</a></th>
 								<th><a
-									th:href="@{'/sort/email?ordem='+ ${revDir}+'&pag='+${ativo} }">Email</a></th>
+									th:href="@{'/sort/email?ordem='+ ${revDir}+'&pag='+${ativo} }">Email<i
+										class="px-1 fas fa-sort-alpha-down"></i></a></th>
 								<th><a
-									th:href="@{'/sort/dataCadastro?ordem='+ ${revDir}+'&pag='+${ativo} }">Cadastro</a></th>
+									th:href="@{'/sort/dataCadastro?ordem='+ ${revDir}+'&pag='+${ativo} }">Cadastro<i
+										class="px-1 fas fa-sort-alpha-down"></i></a></th>
 								<th><a
-									th:href="@{'/sort/sexo?ordem='+ ${revDir}+'&pag='+${ativo} }">Sexo</a></th>
+									th:href="@{'/sort/sexo?ordem='+ ${revDir}+'&pag='+${ativo} }">Sexo<i
+										class="px-1 fas fa-sort-alpha-down"></i></a></th>
 								<th><a
-									th:href="@{'/sort/ativo?ordem='+ ${revDir}+'&pag='+${ativo}}">Ativo</a></th>
+									th:href="@{'/sort/ativo?ordem='+ ${revDir}+'&pag='+${ativo}}">Ativo<i
+										class="px-1 fas fa-sort-alpha-down"></i></a></th>
 								<th><a
-									th:href="@{'/sort/cidade?ordem='+ ${revDir}+'&pag='+${ativo}}">Cidade</a></th>
+									th:href="@{'/sort/cidade?ordem='+ ${revDir}+'&pag='+${ativo}}">Cidade<i
+										class="px-1 fas fa-sort-alpha-down"></i></a></th>
 								<th><a
-									th:href="@{'/sort/estado?ordem='+ ${revDir}+'&pag='+${ativo}}">Estado</a></th>
+									th:href="@{'/sort/estado?ordem='+ ${revDir}+'&pag='+${ativo}}">Estado<i
+										class="px-1 fas fa-sort-alpha-down"></i></a></th>
 								<th class="text-center">Ações</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr th:each="pessoa: ${pessoas}">
 								<td th:text="${pessoa.id}"></td>
-								<td th:text="${pessoa.nome} eq ''? 'N/A': ${pessoa.nome}"></td>
-								<td th:text="${pessoa.email}"></td>
+								<td style="width: 230px" class="text-break" th:text="${pessoa.nome} eq ''? 'N/A': ${pessoa.nome}"></td>
+								<td  class="text-break" th:text="${pessoa.email}"></td>
 								<td
 									th:text="${pessoa.dataCadastro} ? ${#dates.format(pessoa.dataCadastro, 'dd/MM/yyyy')}: 'N/A'">
 								</td>
@@ -75,11 +84,11 @@
 								<td th:text="${pessoa.estado}"></td>
 								<td><a class="btn btn-sm btn-primary"
 									th:href="@{/edit/{id}(id=${pessoa.id})}"> <i
-										class="fas fa-pencil-alt"></i> Editar
+										class="fas fa-pencil-alt"></i>
 								</a> <a class="btn btn-sm btn-danger"
 									onclick="return confirm('Deseja excluir?')"
 									th:href="@{/del/{id}(id=${pessoa.id})}"> <i
-										class="fas fa-trash-alt"></i> Remover
+										class="fas fa-trash-alt"></i>
 								</a></td>
 							</tr>
 						</tbody>
@@ -104,6 +113,9 @@
 						</nav>
 					</div>
 				</div>
+				
+				
+				
 				<div class="row justify-content-center">
 					<p th:if="${msgDoc}" th:text="${msgDoc}"
 						class="bg-danger text-white text-center h5"></p>
@@ -135,9 +147,11 @@
 														<div class="col-sm-7">
 															<strong>Download:</strong> <br /> <a
 																style="word-wrap: break-word;"
-																class="bg-primary text-white"
-																th:href="@{'/download/'+${doc.id}}"> <th:block
-																	th:text="${doc.nomeArquivo}" />
+																th:href="@{'/download/'+${doc.id}}">
+																<strong>
+																	<th:block
+																		th:text="${doc.nomeArquivo}" />
+																</strong> 
 															</a>
 														</div>
 
@@ -145,7 +159,7 @@
 															<a onclick="return confirm('Deseja excluir?')"
 																th:href="@{'/del-doc?id='+${doc.id}}"
 																class="btn btn-sm btn-danger"> <i
-																class="fas fa-trash-alt"></i> Remover
+																class="fas fa-trash-alt"></i>
 															</a>
 														</div>
 													</div>

@@ -12,7 +12,7 @@ import javax.validation.Payload;
 @Constraint(validatedBy = { UniqueEmailValidator.class })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface UniqueEmail {
-	String message() default "{ATENÇÃO}: Email já cadastrado!";
+	String message() default "Email já cadastrado!";
 
 	Class<?>[] groups() default {};
 

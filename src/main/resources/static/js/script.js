@@ -88,15 +88,16 @@ $(function() {
 	setDefaultActive();
 
 	carregarEstados();
+	
+	
+	
 	$('#pesquisa').keyup(function() {
 		var texto = $(this).val();
-		var pagina = $('a.page-link').length;
 		$.ajax({
 			type: "GET",
 			url: "/pesquisa",
 			data: {
 				texto: texto,
-				pagina: pagina
 			},
 			success: function(response){
 				console.log(response.tbody);
