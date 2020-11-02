@@ -30,11 +30,11 @@ public class Usuario implements UserDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	@NotBlank(message = "{ATENÇÃO}: Informe um email!")
+	@NotBlank(message = "Informe um email!")
 	@UniqueEmail
 	@Column(unique = true, nullable = false)
 	private String email;
-	@NotBlank(message = "{ATENÇÃO}: Informe uma senha!")
+	@NotBlank(message = "Informe uma senha!")
 	@Column(nullable = false)
 	private String senha;
 	private String role;
