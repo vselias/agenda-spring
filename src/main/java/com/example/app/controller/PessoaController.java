@@ -88,7 +88,7 @@ public class PessoaController {
 		Page<Pessoa> pessoas = pessoaService.buscarPaginacaoPorUsuario(page);
 		model.addAttribute("pessoas", pessoas.getContent());
 		model.addAttribute("numPaginas", pessoas.getTotalPages());
-		model.addAttribute("ativo", page);
+		model.addAttribute("page", page);
 
 		return "pessoas";
 	}
@@ -144,7 +144,7 @@ public class PessoaController {
 		model.addAttribute("revDir", ordem.equals("asc") ? "desc" : "asc");
 		model.addAttribute("pessoas", sortPorTipo.getContent());
 		model.addAttribute("numPaginas", sortPorTipo.getTotalPages());
-		model.addAttribute("ativo", pag);
+		model.addAttribute("page", pag);
 		return "pessoas";
 	}
 
@@ -247,7 +247,7 @@ public class PessoaController {
 			tbody += "<td class='text-center'>";
 			tbody += "<a class='btn btn-sm btn-primary mr-1' href='/edit/" + pessoa.getId()
 					+ "'><i class='fas fa-pencil-alt'></i></a>";
-			tbody += "<a class='btn btn-sm btn-danger' href='/del/" + pessoa.getId()
+			tbody += "<a onclick='return confirm(\"Deseja excluir?\")' class='btn btn-sm btn-danger' href='/del/" + pessoa.getId()
 					+ "'><i class='fas fa-trash-alt'></i></a>";
 			tbody += "</td>";
 			tbody += "</tr>";
