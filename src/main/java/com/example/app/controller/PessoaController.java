@@ -101,7 +101,7 @@ public class PessoaController {
 			return "cadastro";
 		}
 
-		model.addAttribute("msgCadastro", pessoa.getId() == null ? "Cadastrado!" : "Atualizado!");
+		model.addAttribute("msgCadastro", pessoa.getId() == null ? "Pessoa cadastrado(a)!" : "Pessoa atualizado(a)!");
 		pessoaService.salvar(pessoa, files);
 		return "cadastro";
 	}
@@ -126,7 +126,7 @@ public class PessoaController {
 	@GetMapping("/del/{id}")
 	public String delete(@PathVariable(name = "id") Long id, RedirectAttributes ra) {
 		pessoaService.remover(pessoaService.buscarPorId(id));
-		ra.addFlashAttribute("msgDelete", "Removido!");
+		ra.addFlashAttribute("msgDelete", "Pessoa removido(a)!");
 		return "redirect:/pessoas/1";
 	}
 
