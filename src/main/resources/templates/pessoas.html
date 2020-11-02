@@ -67,9 +67,9 @@
 					<tbody>
 						<tr th:each="pessoa: ${pessoas}">
 							<td th:text="${pessoa.id}"></td>
-							<td style="width: 230px" class="text-break"
+							<td style="max-width: 230px" class="text-break"
 								th:text="${pessoa.nome} eq ''? 'N/A': ${pessoa.nome}"></td>
-							<td class="text-break" th:text="${pessoa.email}"></td>
+							<td th:text="${pessoa.email}"></td>
 							<td
 								th:text="${pessoa.dataCadastro} ? ${#dates.format(pessoa.dataCadastro, 'dd/MM/yyyy')}: 'N/A'">
 							</td>

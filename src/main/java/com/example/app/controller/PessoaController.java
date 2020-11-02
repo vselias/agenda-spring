@@ -230,8 +230,8 @@ public class PessoaController {
 		for (Pessoa pessoa : pesquisa) {
 			tbody += "<tr>";
 			tbody += "<td>" + pessoa.getId() + "</td>";
-			tbody += "<td style='width: 230px' class='text-break'>" + pessoa.getNome() + "</td>";
-			tbody += "<td class='text-break'>" + pessoa.getEmail() + "</td>";
+			tbody += "<td style='max-width: 230px' class='text-break'>" + pessoa.getNome() + "</td>";
+			tbody += "<td>" + pessoa.getEmail() + "</td>";
 			tbody += "<td>" + sdf.format(pessoa.getDataCadastro()) + "</td>";
 			if (pessoa.getSexo().equals("M")) {
 				sexo = "Masculino";
