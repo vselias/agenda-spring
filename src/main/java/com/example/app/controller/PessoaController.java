@@ -270,11 +270,11 @@ public class PessoaController {
 			for (Doc doc : pessoa.getDocs()) {
 				tbodyFile += "<tr><td><div class='row'>";
 				//div btn Download
-				tbodyFile += "<div class='col-sm-7'> <strong>Download:</strong> <br /> <a"
+				tbodyFile += "<div class='col-sm-10'> <strong>Download:</strong> <br /> <a"
 						+ "	style='word-wrap: break-word;'  href='/download/"
 						+ doc.getId() + "'>" + doc.getNomeArquivo() + "	</a></div>";
 				//div btn Delete Download
-				tbodyFile += "<div class='col-sm-5 d-flex align-items-center'>"
+				tbodyFile += "<div class='col-sm-2 justify-content-end d-flex align-items-center'>"
 						+ "	<a onclick='return confirm(\"Deseja excluir?\")' href='/del-doc?id=" + doc.getId()
 						+ "' class='btn btn-sm btn-danger'> <i class='fas fa-trash-alt'></i>"
 						+ "	</a>  </div>";
