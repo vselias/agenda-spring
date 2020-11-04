@@ -276,7 +276,7 @@ public class PessoaController {
 				//div btn Delete Download
 				tbodyFile += "<div class='col-sm-2 justify-content-end d-flex align-items-center'>"
 						+ "	<a onclick='return confirm(\"Deseja excluir?\")' href='/del-doc?id=" + doc.getId()
-						+ "' class='btn btn-sm btn-danger'> <i class='fas fa-trash-alt'></i>"
+						+ "' class='mr-2 btn btn-sm btn-danger'> <i class='fas fa-trash-alt'></i>"
 						+ "	</a>  </div>";
 				tbodyFile += "</div></td></tr>";
 			}
