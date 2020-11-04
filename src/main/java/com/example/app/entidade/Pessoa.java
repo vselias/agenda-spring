@@ -18,6 +18,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -29,13 +30,13 @@ public class Pessoa implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	@NotBlank(message = "Informe um nome!")
-	@Length(min = 6, max = 40, message = "Min de 6 e Max 40 caracters.")
+	@NotBlank(message = "Informe um nome!", groups = NotBlank.class)
+	@Length(min = 6, max = 40, message = "Min de 6 e Max 40 caracters.", groups = Length.class)
 	@Column(length = 50, nullable = false)
 	private String nome;
 	private String telefone;
-	@NotBlank(message = "Informe um email!")
-	@Length(min = 10, max = 40, message = "Min 10 e Max 40 caracters.")
+	@NotBlank(message = "Informe um email!", groups = NotBlank.class)
+	@Length(min = 10, max = 40, message = "Min 10 e Max 40 caracters.", groups = Length.class)
 	@Column(nullable = false)
 	private String email;
 	private String sexo;

@@ -23,6 +23,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,6 +40,7 @@ import com.example.app.entidade.Pessoa;
 import com.example.app.entidade.Usuario;
 import com.example.app.service.PessoaService;
 import com.example.app.service.UsuarioService;
+import com.example.app.validators.OrdemMensagem;
 
 @Controller
 public class PessoaController {
@@ -94,7 +96,7 @@ public class PessoaController {
 	}
 
 	@PostMapping("/salvar")
-	public String salvar(@Valid Pessoa pessoa, BindingResult bindingResult, Model model,
+	public String salvar(@Validated(value = {OrdemMensagem.class}) Pessoa pessoa, BindingResult bindingResult, Model model,
 			@RequestParam("arquivos") MultipartFile[] files) throws IOException {
 
 		if (bindingResult.hasErrors()) {
@@ -203,7 +205,7 @@ public class PessoaController {
 	}
 
 	@PostMapping("/usuario")
-	public String salvarUsuario(Model model, @Valid Usuario usuario, BindingResult bindingResult) {
+	public String salvarUsuario(Model model, @Validated(value = {OrdemMensagem.class}) Usuario usuario, BindingResult bindingResult) {
 		if (bindingResult.hasErrors())
 			return "usuario";
 		usuarioService.salvar(usuario);

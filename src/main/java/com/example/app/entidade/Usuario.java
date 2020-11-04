@@ -30,11 +30,11 @@ public class Usuario implements UserDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	@NotBlank(message = "Informe um email!")
-	@UniqueEmail
+	@NotBlank(message = "Informe um email!", groups = NotBlank.class)
+	@UniqueEmail(groups = UniqueEmail.class)
 	@Column(unique = true, nullable = false)
 	private String email;
-	@NotBlank(message = "Informe uma senha!")
+	@NotBlank(message = "Informe uma senha!", groups = NotBlank.class)
 	@Column(nullable = false)
 	private String senha;
 	private String role;
@@ -42,8 +42,6 @@ public class Usuario implements UserDetails {
 	@OneToMany(mappedBy = "usuario")
 	private List<Pessoa> pessoas;
 
-	
-	
 	public String getRole() {
 		return role;
 	}
