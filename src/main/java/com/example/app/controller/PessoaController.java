@@ -78,8 +78,7 @@ public class PessoaController {
 
 	@GetMapping("/pessoas")
 	public String pessoas(Model model, Authentication authentication) {
-		Usuario usuario = usuarioService.buscarUsuarioPorEmail(authentication.getName());
-		model.addAttribute("pessoas", pessoaService.buscarTodosPorUsuario(usuario.getId()));
+		model.addAttribute("pessoas", pessoaService.buscarTodosPorUsuario();
 		return "pessoas";
 	}
 
@@ -98,12 +97,10 @@ public class PessoaController {
 	@PostMapping("/salvar")
 	public String salvar(@Validated(value = {OrdemMensagem.class}) Pessoa pessoa, BindingResult bindingResult, Model model,
 			@RequestParam("arquivos") MultipartFile[] files) throws IOException {
-
 		if (bindingResult.hasErrors()) {
 			return "cadastro";
 		}
-
-		model.addAttribute("msgCadastro", pessoa.getId() == null ? "Pessoa cadastrado(a)!" : "Pessoa atualizado(a)!");
+		model.addAttribute("msgCadastro", pessoa.getId() == null ? "Pessoa cadastrada!" : "Pessoa atualizada!");
 		pessoaService.salvar(pessoa, files);
 		return "cadastro";
 	}
@@ -128,7 +125,7 @@ public class PessoaController {
 	@GetMapping("/del/{id}")
 	public String delete(@PathVariable(name = "id") Long id, RedirectAttributes ra) {
 		pessoaService.remover(pessoaService.buscarPorId(id));
-		ra.addFlashAttribute("msgDelete", "Pessoa removido(a)!");
+		ra.addFlashAttribute("msgDelete", "Pessoa removida!");
 		return "redirect:/pessoas/1";
 	}
 
@@ -234,7 +231,7 @@ public class PessoaController {
 			tbody += "<td>" + pessoa.getId() + "</td>";
 			tbody += "<td style='max-width: 230px' class='text-break'>" + pessoa.getNome() + "</td>";
 			tbody += "<td>" + pessoa.getEmail() + "</td>";
-			tbody += "<td>" + sdf.format(pessoa.getDataCadastro()) + "</td>";
+			tbody += "<td>" + (pessoa.getDataCadastro() != null ? sdf.format(pessoa.getDataCadastro()) : "N/A") + "</td>";
 			if (pessoa.getSexo().equals("M")) {
 				sexo = "Masculino";
 			} else if (pessoa.getSexo().equals("F")) {
@@ -266,7 +263,7 @@ public class PessoaController {
 			tbodyFile += "<tr>";
 			tbodyFile += "<td>" + pessoa.getId() + "</td>";
 			tbodyFile += "<td>" + pessoa.getNome() + "</td>";
-			tbodyFile += "<td>" + sdf.format(pessoa.getDataCadastro()) + "</td>";
+			tbodyFile += "<td>" + (pessoa.getDataCadastro() != null ? sdf.format(pessoa.getDataCadastro()) : "N/A") + "</td>";
 			tbodyFile += "<td>" + (pessoa.isAtivo() ? "Ativo" : "Desativado") + "</td>";
 			tbodyFile += "<td align='center' style='width:350px'><table class='w-100'>";
 			for (Doc doc : pessoa.getDocs()) {

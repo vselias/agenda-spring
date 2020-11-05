@@ -17,6 +17,6 @@ public interface PessoaService {
 	Page<Pessoa> buscarPaginacaoPorUsuario(int page);
 	Pessoa buscarPorEmail(String email);
 	Page<Pessoa> sortPorTipo(String tipo, String ordem, int pag);
-	List<Pessoa> buscarTodosPorUsuario(Long id);
+	List<Pessoa> buscarTodosPorUsuario();
 	Page<Pessoa> buscarPorNome(String texto, Long id);
 }

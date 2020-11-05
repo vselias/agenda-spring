@@ -103,7 +103,7 @@ public class PessoaServiceImpl implements PessoaService {
 	}
 
 	@Override
-	public List<Pessoa> buscarTodosPorUsuario(Long id) {
+	public List<Pessoa> buscarTodosPorUsuario() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		Usuario user = userDAO.buscarUsuarioPorEmail(authentication.getName());
 		return pessoaDAO.buscarTodosPorUsuario(user.getId());
