@@ -78,7 +78,7 @@ public class PessoaController {
 
 	@GetMapping("/pessoas")
 	public String pessoas(Model model, Authentication authentication) {
-		model.addAttribute("pessoas", pessoaService.buscarTodosPorUsuario();
+		model.addAttribute("pessoas", pessoaService.buscarTodosPorUsuario());
 		return "pessoas";
 	}
 
