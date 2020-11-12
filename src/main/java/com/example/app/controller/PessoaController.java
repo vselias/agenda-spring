@@ -268,9 +268,9 @@ public class PessoaController {
 			tbodyFile += "<td>" + (pessoa.getDataCadastro() != null ? sdf.format(pessoa.getDataCadastro()) : "N/A")
 					+ "</td>";
 			tbodyFile += "<td>" + (pessoa.isAtivo() ? "Ativo" : "Desativado") + "</td>";
-			tbodyFile += "<td align='center' style='width:350px'><table class='w-100'>";
+			tbodyFile += "<td align='center' style='width:400px'><table class='w-100'>";
 			for (Doc doc : pessoa.getDocs()) {
-				tbodyFile += "<tr><td><div class='row'>";
+				tbodyFile += "<tr><td><div class='row' style='width: 400px;'>";
 				// div btn Download
 				tbodyFile += "<div class='col-sm-10'> <strong>Download:</strong> <br /> <a"
 						+ "	style='word-wrap: break-word;'  href='/download/" + doc.getId() + "'>"
