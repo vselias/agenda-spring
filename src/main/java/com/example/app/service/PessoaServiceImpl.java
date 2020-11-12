@@ -115,12 +115,13 @@ public class PessoaServiceImpl implements PessoaService {
 				.buscarUsuarioPorEmail(SecurityContextHolder.getContext().getAuthentication().getName());
 		Pageable paginacao = PageRequest.of(page - 1, 5);
 		Page<Pessoa> pessoas = pessoaDAO.buscarTodosPorUsuarioPag(usuario.getId(), paginacao);
+
 		return pessoas;
 	}
 
 	@Override
 	public Page<Pessoa> buscarPorNome(String texto, Long id) {
-		return pessoaDAO.buscarPorNome(texto, id ,PageRequest.of(0, 5));
+		return pessoaDAO.buscarPorNome(texto, id, PageRequest.of(0, 5));
 	}
 
 }

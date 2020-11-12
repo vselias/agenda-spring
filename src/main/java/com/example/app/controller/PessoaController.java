@@ -84,9 +84,17 @@ public class PessoaController {
 
 	@GetMapping("/pessoas/{page}")
 	public String pessoasPaginacao(@PathVariable(value = "page") int page, Model model) {
+		if(page < 1) {
+			page = 1;
+		}
 		// Antigo
 		// Page<Pessoa> pessoas = pessoaService.findPaging(page);
 		Page<Pessoa> pessoas = pessoaService.buscarPaginacaoPorUsuario(page);
+
+		if (page > pessoas.getTotalPages()) {
+			page = 1;
+			pessoas = pessoaService.buscarPaginacaoPorUsuario(page);
+		}
 		model.addAttribute("pessoas", pessoas.getContent());
 		model.addAttribute("numPaginas", pessoas.getTotalPages());
 		model.addAttribute("page", page);
@@ -95,8 +103,8 @@ public class PessoaController {
 	}
 
 	@PostMapping("/salvar")
-	public String salvar(@Validated(value = {OrdemMensagem.class}) Pessoa pessoa, BindingResult bindingResult, Model model,
-			@RequestParam("arquivos") MultipartFile[] files) throws IOException {
+	public String salvar(@Validated(value = { OrdemMensagem.class }) Pessoa pessoa, BindingResult bindingResult,
+			Model model, @RequestParam("arquivos") MultipartFile[] files) throws IOException {
 		if (bindingResult.hasErrors()) {
 			return "cadastro";
 		}
@@ -202,7 +210,8 @@ public class PessoaController {
 	}
 
 	@PostMapping("/usuario")
-	public String salvarUsuario(Model model, @Validated(value = {OrdemMensagem.class}) Usuario usuario, BindingResult bindingResult) {
+	public String salvarUsuario(Model model, @Validated(value = { OrdemMensagem.class }) Usuario usuario,
+			BindingResult bindingResult) {
 		if (bindingResult.hasErrors())
 			return "usuario";
 		usuarioService.salvar(usuario);
@@ -217,8 +226,7 @@ public class PessoaController {
 
 	@GetMapping(value = "/pesquisa")
 	@ResponseBody
-	public Map<String, String> pesquisa(@RequestParam(value = "texto") String texto,
-			Authentication authentication) {
+	public Map<String, String> pesquisa(@RequestParam(value = "texto") String texto, Authentication authentication) {
 		Usuario usuario = usuarioService.buscarUsuarioPorEmail(authentication.getName());
 		Page<Pessoa> pesquisa = pessoaService.buscarPorNome(texto, usuario.getId());
 		String tbody = "<tbody>";
@@ -231,23 +239,17 @@ public class PessoaController {
 			tbody += "<td>" + pessoa.getId() + "</td>";
 			tbody += "<td style='max-width: 230px' class='text-break'>" + pessoa.getNome() + "</td>";
 			tbody += "<td>" + pessoa.getEmail() + "</td>";
-			tbody += "<td>" + (pessoa.getDataCadastro() != null ? sdf.format(pessoa.getDataCadastro()) : "N/A") + "</td>";
-			if (pessoa.getSexo().equals("M")) {
-				sexo = "Masculino";
-			} else if (pessoa.getSexo().equals("F")) {
-				sexo = "Feminino";
-			} else if (pessoa.getSexo().equals("N")) {
-				sexo = "Neutro";
-			}
-			tbody += "<td>" + sexo + "</td>";
+			tbody += "<td>" + (pessoa.getDataCadastro() != null ? sdf.format(pessoa.getDataCadastro()) : "N/A")
+					+ "</td>";
+			tbody += "<td>" + pessoa.getSexo() + "</td>";
 			tbody += "<td>" + (pessoa.isAtivo() ? "Ativo" : "Desativado") + "</td>";
 			tbody += "<td>" + pessoa.getCidade() + "</td>";
 			tbody += "<td>" + pessoa.getEstado() + "</td>";
 			tbody += "<td class='text-center'>";
 			tbody += "<a class='btn btn-sm btn-primary mr-1' href='/edit/" + pessoa.getId()
 					+ "'><i class='fas fa-pencil-alt'></i></a>";
-			tbody += "<a onclick='return confirm(\"Deseja excluir?\")' class='btn btn-sm btn-danger' href='/del/" + pessoa.getId()
-					+ "'><i class='fas fa-trash-alt'></i></a>";
+			tbody += "<a onclick='return confirm(\"Deseja excluir?\")' class='btn btn-sm btn-danger' href='/del/"
+					+ pessoa.getId() + "'><i class='fas fa-trash-alt'></i></a>";
 			tbody += "</td>";
 			tbody += "</tr>";
 		}
@@ -263,20 +265,20 @@ public class PessoaController {
 			tbodyFile += "<tr>";
 			tbodyFile += "<td>" + pessoa.getId() + "</td>";
 			tbodyFile += "<td>" + pessoa.getNome() + "</td>";
-			tbodyFile += "<td>" + (pessoa.getDataCadastro() != null ? sdf.format(pessoa.getDataCadastro()) : "N/A") + "</td>";
+			tbodyFile += "<td>" + (pessoa.getDataCadastro() != null ? sdf.format(pessoa.getDataCadastro()) : "N/A")
+					+ "</td>";
 			tbodyFile += "<td>" + (pessoa.isAtivo() ? "Ativo" : "Desativado") + "</td>";
 			tbodyFile += "<td align='center' style='width:350px'><table class='w-100'>";
 			for (Doc doc : pessoa.getDocs()) {
 				tbodyFile += "<tr><td><div class='row'>";
-				//div btn Download
+				// div btn Download
 				tbodyFile += "<div class='col-sm-10'> <strong>Download:</strong> <br /> <a"
-						+ "	style='word-wrap: break-word;'  href='/download/"
-						+ doc.getId() + "'>" + doc.getNomeArquivo() + "	</a></div>";
-				//div btn Delete Download
+						+ "	style='word-wrap: break-word;'  href='/download/" + doc.getId() + "'>"
+						+ doc.getNomeArquivo() + "	</a></div>";
+				// div btn Delete Download
 				tbodyFile += "<div class='col-sm-2 justify-content-end d-flex align-items-center'>"
 						+ "	<a onclick='return confirm(\"Deseja excluir?\")' href='/del-doc?id=" + doc.getId()
-						+ "' class='mr-2 btn btn-sm btn-danger'> <i class='fas fa-trash-alt'></i>"
-						+ "	</a>  </div>";
+						+ "' class='mr-2 btn btn-sm btn-danger'> <i class='fas fa-trash-alt'></i>" + "	</a>  </div>";
 				tbodyFile += "</div></td></tr>";
 			}
 			if (pessoa.getDocs().isEmpty()) {

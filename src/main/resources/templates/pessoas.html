@@ -73,12 +73,7 @@
 							<td
 								th:text="${pessoa.dataCadastro} ? ${#dates.format(pessoa.dataCadastro, 'dd/MM/yyyy')}: 'N/A'">
 							</td>
-							<td>
-								<div th:text="${pessoa.sexo} eq 'M'? 'Masculino'"></div>
-								<div th:text="${pessoa.sexo} eq 'F'? 'Feminino'"></div>
-								<div th:text="${pessoa.sexo} eq 'N' ? 'Neutro'"></div>
-
-							</td>
+							<td th:text="${pessoa.sexo}"></td>
 							<td th:text="${pessoa.ativo}? 'Ativo': 'Desativado'"></td>
 							<td th:text="${pessoa.cidade}"></td>
 							<td th:text="${pessoa.estado}"></td>
@@ -117,12 +112,12 @@
 									<td
 										th:text="${pessoa.dataCadastro} ? ${#dates.format(pessoa.dataCadastro, 'dd/MM/yyyy')}: 'N/A'">
 									</td>
-									<td th:text="${pessoa.ativo}? 'Ativo': 'Desativado'"></td>
-									<td style="width: 350px;" align="center">
+									<td th:text="${pessoa.ativo} ? 'Ativo': 'Desativado'"></td>
+									<td style="width: 400px;">
 										<table class="w-100">
 											<tr th:each="doc : ${pessoa.docs}">
 												<td>
-													<div class="row">
+													<div class="row" style="width: 400px;">
 														<div class="col-sm-10">
 															<strong>Download:</strong> <br /> <a
 																style="word-wrap: break-word;"
@@ -161,11 +156,11 @@
 						aria-label="Navegação de página exemplo">
 						<ul class="pagination">
 							<li class="page-item"><a class="btn btn-dark"
-								th:href="@{'/pessoas/'+${1}}"><i
-									class='fas fa-step-backward'></i> Primeiro </a></li>
+								th:href="@{/pessoas/1}"><i class='fas fa-step-backward'></i>
+									Primeiro </a></li>
 							<li th:class="${i == page} ? 'active page-item': 'page-item' "
 								th:each="i : ${#numbers.sequence(1, numPaginas)}"
-								class="page-item"><a class="page-link"
+								class="page-item"><a class="page-link rounded"
 								th:href="@{'/pessoas/'+${i}}"> <th:block th:text="${i}" />
 							</a></li>
 							<li class="page-item"><a class="btn btn-dark"
@@ -175,8 +170,16 @@
 					</nav>
 				</div>
 
+
+
 			</div>
 		</div>
 	</div>
 </body>
 </html>
+
+<!-- 				<div  class="row justify-content-center  my-3"> -->
+<!-- 						<a th:if="${page} != 1" th:href="@{'/pessoas/'+${page-1}}" class="btn btn-sm btn-dark" > &#60;&#60; Anterior</a> -->
+<!-- 						<span class="h6 span">[[${page}]] / [[${numPaginas}]]</span> -->
+<!-- 						<a th:if="${page} < ${numPaginas}"  th:href="@{'/pessoas/'+${page+1}}" class="btn btn-sm btn-dark" >Próximo &#62;&#62;</a> -->
+<!-- 				</div> -->

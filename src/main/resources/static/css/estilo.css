@@ -11,3 +11,10 @@
 	left: auto;
 	right: auto;	
 }
+
+.span {
+	height: 30.48px;
+	display: grid;
+	align-items: center;
+	padding: 0px 5px;
+}
