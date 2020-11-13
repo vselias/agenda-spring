@@ -49,4 +49,5 @@ public class UsuarioServiceImpl implements UsuarioService {
 		return userDAO.buscarUsuarioPorEmail(email);
 	}
 
+
 }

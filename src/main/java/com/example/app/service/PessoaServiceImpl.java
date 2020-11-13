@@ -52,6 +52,7 @@ public class PessoaServiceImpl implements PessoaService {
 			}
 		}
 		user.getPessoas().add(pessoa);
+		user.setNotificacao(user.getNotificacao()+1);
 		pessoa.setUsuario(user);
 		pessoaDAO.save(pessoa);
 	}

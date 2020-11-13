@@ -71,8 +71,10 @@ public class PessoaController {
 	}
 
 	@GetMapping("/cadastro")
-	public String cadastro(Model model) {
+	public String cadastro(Model model, Authentication authentication) {
+		Usuario usuario = usuarioService.buscarUsuarioPorEmail(authentication.getName());
 		model.addAttribute("pessoa", new Pessoa());
+		model.addAttribute("usuario", usuario);
 		return "cadastro";
 	}
 
@@ -83,13 +85,18 @@ public class PessoaController {
 	}
 
 	@GetMapping("/pessoas/{page}")
-	public String pessoasPaginacao(@PathVariable(value = "page") int page, Model model) {
+	public String pessoasPaginacao(@PathVariable(value = "page") int page, Model model, Authentication auth) {
 		if(page < 1) {
 			page = 1;
 		}
 		// Antigo
 		// Page<Pessoa> pessoas = pessoaService.findPaging(page);
 		Page<Pessoa> pessoas = pessoaService.buscarPaginacaoPorUsuario(page);
+		
+		// atualizar notificacao
+		Usuario usuario = usuarioService.buscarUsuarioPorEmail(auth.getName());
+		usuario.setNotificacao(0);
+		usuarioService.salvar(usuario);
 
 		if (page > pessoas.getTotalPages()) {
 			page = 1;
@@ -104,11 +111,14 @@ public class PessoaController {
 
 	@PostMapping("/salvar")
 	public String salvar(@Validated(value = { OrdemMensagem.class }) Pessoa pessoa, BindingResult bindingResult,
-			Model model, @RequestParam("arquivos") MultipartFile[] files) throws IOException {
+			Model model, Authentication auth, @RequestParam("arquivos") MultipartFile[] files) throws IOException {
 		if (bindingResult.hasErrors()) {
 			return "cadastro";
 		}
+		Usuario usuario = usuarioService.buscarUsuarioPorEmail(auth.getName());
 		model.addAttribute("msgCadastro", pessoa.getId() == null ? "Pessoa cadastrada!" : "Pessoa atualizada!");
+		model.addAttribute("usuario", usuario);
+		model.addAttribute("pessoa", new Pessoa());
 		pessoaService.salvar(pessoa, files);
 		return "cadastro";
 	}

@@ -12,7 +12,7 @@
 			<li class="nav-item"><a class="nav-link" th:href="@{/cadastro}">Cadastrar
 					<span class="sr-only">(current)</span>
 			</a></li>
-			<li class="nav-item"><a class="nav-link" th:href="@{/pessoas/1}">Listar</a></li>
+			<li class="nav-item"><a class="nav-link" th:href="@{/pessoas/1}">Listar <span th:if="${usuario} ne null and ${usuario.notificacao} > 0" class="badge badge-danger">[[${usuario.notificacao}]]</span></a></li>
 		</ul>
 		<form th:action="@{/logout}" method="post" class="form-inline ml-auto">
 			<p class="text-white mr-1 h6">

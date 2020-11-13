@@ -38,9 +38,18 @@ public class Usuario implements UserDetails {
 	@Column(nullable = false)
 	private String senha;
 	private String role;
+	private int notificacao;
 
 	@OneToMany(mappedBy = "usuario")
 	private List<Pessoa> pessoas;
+
+	public int getNotificacao() {
+		return notificacao;
+	}
+
+	public void setNotificacao(int notificacao) {
+		this.notificacao = notificacao;
+	}
 
 	public String getRole() {
 		return role;
