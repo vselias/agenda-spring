@@ -44,7 +44,6 @@ $(function() {
 	function carregarEstados() {
 		$.getJSON("/json/estados-cidades.json", function(data) {
 			$.each(data.estados, function(i, item) {
-				console.log(item.nome);
 				var o = new Option(item.nome, item.sigla);
 				$('#estados').append(o);
 			});
@@ -52,7 +51,6 @@ $(function() {
 			var estado = $(option).val();
 			$.each(data.estados, function(i, item) {
 				if (estado == item.sigla) {
-					console.log("Cidades: ");
 					$.each(item.cidades, function(i, cidades) {
 						var o = new Option(cidades, cidades);
 						$('#cidade').append(o);
@@ -68,7 +66,6 @@ $(function() {
 		$.getJSON("/json/estados-cidades.json", function(data) {
 			$.each(data.estados, function(i, item) {
 				if (estado == item.sigla) {
-					console.log("Cidades: ");
 					$.each(item.cidades, function(i, cidades) {
 						var o = new Option(cidades, cidades);
 						$('#cidade').append(o);
@@ -80,17 +77,14 @@ $(function() {
 
 	var setDefaultActive = function() {
 		var path = window.location.pathname;
-		console.log(path);
 		var element = $("a.nav-link[href='" + path + "']");
 		element.addClass("active");
 	}
 
 	setDefaultActive();
-
 	carregarEstados();
-	
-	
-	
+
+
 	$('#pesquisa').keyup(function() {
 		var texto = $(this).val();
 		$.ajax({
@@ -99,12 +93,11 @@ $(function() {
 			data: {
 				texto: texto,
 			},
-			success: function(response){
-				console.log(response.tbody);
+			success: function(response) {
 				$('.table-pessoas tbody').replaceWith(response.tbody);
-				console.log(response.tbodyFile);
 				$('.table-arquivos tbody').replaceWith(response.tbodyFile);
 			}
 		});
 	});
+
 });

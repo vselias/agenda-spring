@@ -1,5 +1,7 @@
 package com.example.app.controller;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -9,6 +11,7 @@ import java.util.Properties;
 import java.util.UUID;
 
 import javax.mail.MessagingException;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -16,6 +19,7 @@ import javax.validation.executable.ValidateOnExecution;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
@@ -35,6 +39,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.ResourceUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
@@ -112,8 +117,7 @@ public class PessoaController {
 
 		// atualizar notificacao
 		Usuario usuario = usuarioService.buscarUsuarioPorEmail(auth.getName());
-		usuario.setNotificacao(0);
-		usuarioService.salvar(usuario);
+		usuarioService.salvarNotificacao(usuario);
 
 		if (page > pessoas.getTotalPages()) {
 			page = 1;
@@ -241,18 +245,21 @@ public class PessoaController {
 			BindingResult bindingResult) {
 		if (bindingResult.hasErrors())
 			return "usuario";
+
+		usuario.setSenha(new BCryptPasswordEncoder().encode(usuario.getSenha()));
 		usuarioService.salvar(usuario);
+
 		model.addAttribute("msgUsuario", "Usuario cadastrado!");
 		return "usuario";
 	}
 
 	@GetMapping("/emailReset")
-	public String emailResetPage() {
+	public String emailReset() {
 		return "emailReset";
 	}
 
 	@PostMapping("/emailReset")
-	public String emailResetSend(HttpServletRequest request, Model model) throws MessagingException {
+	public String emailResetSend(HttpServletRequest request, Model model) throws MessagingException, IOException {
 		String email = request.getParameter("email");
 		Usuario usuario = usuarioService.buscarUsuarioPorEmail(email);
 		if (usuario == null) {
@@ -262,15 +269,15 @@ public class PessoaController {
 			String token = UUID.randomUUID().toString();
 			usuario.setToken(token);
 			usuarioService.salvar(usuario);
-			String msg = "<html><body> Click no link abaixo para resetar sua senha!";
+			String msg = "<html> <body><img src=\"cid:crudImg\" width=\"30px\" height=\"25\" />";
+			msg += "<h4>Prezado, Click no link abaixo para resetar sua senha!</h4>";
 			msg += "<br />";
-			msg += URL_SITE + "/verificaNovaSenha?token=" + usuario.getToken() + " <br /> </body></html>";
+			msg += "<h4>" + URL_SITE + "/verificaNovaSenha?token=" + usuario.getToken()
+					+ "</h4> <br /> </body></html>";
 			enviarEmail(email, msg);
 			model.addAttribute("msgReset", "Email enviado com sucesso para: " + email + "!");
 			return "emailReset";
-
 		}
-
 	}
 
 	@GetMapping("/verificaNovaSenha")

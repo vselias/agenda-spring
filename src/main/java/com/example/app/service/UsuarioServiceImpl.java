@@ -20,7 +20,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 	@Override
 	public void salvar(Usuario usuario) {
-		usuario.setSenha(new BCryptPasswordEncoder().encode(usuario.getSenha()));
 		userDAO.save(usuario);
 	}
 
@@ -53,6 +52,13 @@ public class UsuarioServiceImpl implements UsuarioService {
 	public Usuario buscarPorToken(String token) {
 		return userDAO.buscarUsuarioPorToken(token);
 	}
+
+	@Override
+	public void salvarNotificacao(Usuario usuario) {
+		usuario.setNotificacao(0);
+		userDAO.save(usuario);
+	}
+
 
 
 }

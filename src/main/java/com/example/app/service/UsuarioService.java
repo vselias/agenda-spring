@@ -12,4 +12,5 @@ public interface UsuarioService {
 	List<Usuario> buscarTodos();
 	Usuario buscarUsuarioPorEmail(String name);
 	Usuario buscarPorToken(String token);
+	void salvarNotificacao(Usuario usuario);
 }
