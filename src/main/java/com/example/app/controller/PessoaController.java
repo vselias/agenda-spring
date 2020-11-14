@@ -12,6 +12,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.validation.executable.ValidateOnExecution;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
@@ -35,6 +36,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -65,6 +67,8 @@ public class PessoaController {
 	private JavaMailSender javaMailSender;
 	@Autowired
 	private UsuarioService usuarioService;
+	private final String URL_LOCAL = "http://localhost:8080";
+	private final String URL_SITE = "https://agenda-spring.herokuapp.com";
 
 	@GetMapping("/pessoa")
 	public Pessoa pessoa(@RequestParam(value = "nome") String nome, @RequestParam(value = "tel") String telefone) {
@@ -258,9 +262,9 @@ public class PessoaController {
 			String token = UUID.randomUUID().toString();
 			usuario.setToken(token);
 			usuarioService.salvar(usuario);
-			String msg = "<html><body> Click no link abaixo para resetar sua senha";
-			msg += "<br /> Esse Link tem um tempo de duração de 30 minutos: ";
-			msg += request.getLocalName()+"/novaSenha?token=" + usuario.getToken() + " <br /> </body></html>";
+			String msg = "<html><body> Click no link abaixo para resetar sua senha!";
+			msg += "<br />";
+			msg += URL_SITE + "/verificaNovaSenha?token=" + usuario.getToken() + " <br /> </body></html>";
 			enviarEmail(email, msg);
 			model.addAttribute("msgReset", "Email enviado com sucesso para: " + email + "!");
 			return "emailReset";
@@ -269,8 +273,8 @@ public class PessoaController {
 
 	}
 
-	@GetMapping("/novaSenha")
-	public String novaSenha(@RequestParam("token") String token , Model model) {
+	@GetMapping("/verificaNovaSenha")
+	public String verificaNovaSenha(@RequestParam("token") String token, Model model) {
 		Usuario usuario = usuarioService.buscarPorToken(token);
 		if (usuario == null) {
 			return "error";
@@ -280,13 +284,30 @@ public class PessoaController {
 		}
 	}
 
+	@PostMapping("/novaSenha")
+	public String redefinirNovaSenha(Model model, @Validated(value = { OrdemMensagem.class }) Usuario usuario,
+			BindingResult bindingResult) {
+
+		if (bindingResult.hasErrors()) {
+			FieldError fieldError = bindingResult.getFieldError();
+			if (!fieldError.getCode().equalsIgnoreCase("uniqueemail")) {
+				model.addAttribute("usuario", usuario);
+				return "novaSenha";
+			}
+		}
+		usuarioService.salvar(usuario);
+		model.addAttribute("msgNovaSenha", "Senha atualizada com sucesso!");
+		model.addAttribute("usuario", new Usuario());
+		return "novaSenha";
+	}
+
 	@GetMapping("/email")
 	@ResponseBody
 	public String email(HttpServletRequest request) throws MessagingException {
 		String token = UUID.randomUUID().toString();
 		String msg = "<html><body> Click no link abaixo para resetar sua senha";
 		msg += "<br /> Esse Link tem um tempo de duração de 30 minutos: ";
-		msg += request.getLocalName()+"/novaSenha?token=" + token + " <br /> </body></html>";
+		msg += "http://localhost:8080/verificaNovaSenha?token=" + token + " <br /> </body></html>";
 		enviarEmail("viniciuseliasmoreira@hotmail.com", msg);
 		return "email enviado com sucesso!";
 	}
@@ -296,7 +317,7 @@ public class PessoaController {
 		MimeMessage mimeMessage = sender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "utf-8");
 		helper.setTo(emailTo);
-		helper.setSubject("CRUD-PESSOAS resete da senha");
+		helper.setSubject("CRUD-PESSOAS redefinição de nova senha");
 		helper.setText(msgEmail, true);
 		sender.send(mimeMessage);
 	}
@@ -326,7 +347,6 @@ public class PessoaController {
 	@GetMapping("/password")
 	@ResponseBody
 	public String verificaSenha() {
-
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		boolean matches = encoder.matches("321", "$2a$10$PdwmKFfYpnPARb5aFr232eSq.r2xdwJ.NM9st0EUVJCxVn4zQbVDW");
 		if (matches)
