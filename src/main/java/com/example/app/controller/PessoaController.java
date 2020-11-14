@@ -260,7 +260,7 @@ public class PessoaController {
 			usuarioService.salvar(usuario);
 			String msg = "<html><body> Click no link abaixo para resetar sua senha";
 			msg += "<br /> Esse Link tem um tempo de duração de 30 minutos: ";
-			msg += " http://localhost:8080/novaSenha?token=" + usuario.getToken() + " <br /> </body></html>";
+			msg += request.getLocalName()+"/novaSenha?token=" + usuario.getToken() + " <br /> </body></html>";
 			enviarEmail(email, msg);
 			model.addAttribute("msgReset", "Email enviado com sucesso para: " + email + "!");
 			return "emailReset";
