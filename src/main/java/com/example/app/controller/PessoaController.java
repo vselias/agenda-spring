@@ -272,8 +272,7 @@ public class PessoaController {
 			String msg = "<html><body>";
 			msg += "<h4>Prezado, Click no link abaixo para resetar sua senha!</h4>";
 			msg += "<br />";
-			msg += URL_SITE + "/verificaNovaSenha?token=" + usuario.getToken()
-					+ " <br /> </body></html>";
+			msg += URL_SITE + "/verificaNovaSenha?token=" + usuario.getToken() + " <br /> </body></html>";
 			enviarEmail(email, msg);
 			model.addAttribute("msgReset", "Email enviado com sucesso para: " + email + "!");
 			return "emailReset";
@@ -343,6 +342,9 @@ public class PessoaController {
 		mailProperties.put("mail.smtp.socketFactory.port", "465");
 		mailProperties.put("mail.smtp.socketFactory.fallback", "false");
 		mailProperties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+
+
+		
 		sender.setJavaMailProperties(mailProperties);
 		return sender;
 	}
