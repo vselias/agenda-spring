@@ -272,8 +272,8 @@ public class PessoaController {
 			String msg = "<html><body>";
 			msg += "<h4>Prezado, Click no link abaixo para resetar sua senha!</h4>";
 			msg += "<br />";
-			msg += "<h4>" + URL_SITE + "/verificaNovaSenha?token=" + usuario.getToken()
-					+ "</h4> <br /> </body></html>";
+			msg += URL_SITE + "/verificaNovaSenha?token=" + usuario.getToken()
+					+ "<br /> </body></html>";
 			enviarEmail(email, msg);
 			model.addAttribute("msgReset", "Email enviado com sucesso para: " + email + "!");
 			return "emailReset";
