@@ -11,4 +11,5 @@ public interface UsuarioService {
 	void remover(Usuario usuario);
 	List<Usuario> buscarTodos();
 	Usuario buscarUsuarioPorEmail(String name);
+	Usuario buscarPorToken(String token);
 }

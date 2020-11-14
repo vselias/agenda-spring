@@ -41,7 +41,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	    @Override
 	    protected void configure(HttpSecurity http) throws Exception {
 	        http.authorizeRequests()
-	        	.antMatchers("/senha","/user" ,"/usuario" ,"/imagens/**").permitAll()
+	        	.antMatchers("/senha","/password","/emailReset","/novaSenha", "/email","/usuario" ,"/imagens/**").permitAll()
 	            .anyRequest().authenticated()
 	            .and()
 	            .formLogin().loginPage("/login")
@@ -50,6 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	            .defaultSuccessUrl("/index", true)
 	            .permitAll()
 	            .and()
-	            .logout().permitAll();
+	            .logout().permitAll()
+	            .and().sessionManagement().maximumSessions(1).expiredUrl("/cadastro");
 	    }
 }

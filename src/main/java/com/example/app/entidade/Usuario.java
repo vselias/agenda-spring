@@ -11,9 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 
-import org.springframework.security.config.core.GrantedAuthorityDefaults;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -37,11 +35,18 @@ public class Usuario implements UserDetails {
 	@NotBlank(message = "Informe uma senha!", groups = NotBlank.class)
 	@Column(nullable = false)
 	private String senha;
-	private String role;
 	private int notificacao;
-
+	private String token;
 	@OneToMany(mappedBy = "usuario")
 	private List<Pessoa> pessoas;
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
 
 	public int getNotificacao() {
 		return notificacao;
@@ -49,14 +54,6 @@ public class Usuario implements UserDetails {
 
 	public void setNotificacao(int notificacao) {
 		this.notificacao = notificacao;
-	}
-
-	public String getRole() {
-		return role;
-	}
-
-	public void setRole(String role) {
-		this.role = role;
 	}
 
 	public List<Pessoa> getPessoas() {
@@ -98,7 +95,7 @@ public class Usuario implements UserDetails {
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		List<GrantedAuthority> lista = new ArrayList<GrantedAuthority>();
-		lista.add(new SimpleGrantedAuthority(this.getRole()));
+		lista.add(new SimpleGrantedAuthority("ROLE_USER"));
 		return lista;
 	}
 

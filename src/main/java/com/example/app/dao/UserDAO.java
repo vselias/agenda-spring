@@ -9,5 +9,7 @@ import com.example.app.entidade.Usuario;
 public interface UserDAO extends CrudRepository<Usuario, Long> {
 	@Query("select u from Usuario u where u.email = :email")
 	Usuario buscarUsuarioPorEmail(@Param("email") String email);
+	@Query("select u from Usuario u where u.token = :token")
+	Usuario buscarUsuarioPorToken(@Param("token") String token);
 	
 }

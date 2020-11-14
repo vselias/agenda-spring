@@ -5,17 +5,29 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
+import java.util.UUID;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailException;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -49,7 +61,8 @@ public class PessoaController {
 	private PessoaService pessoaService;
 	@Autowired
 	private DocDAO docDAO;
-
+	@Autowired
+	private JavaMailSender javaMailSender;
 	@Autowired
 	private UsuarioService usuarioService;
 
@@ -86,13 +99,13 @@ public class PessoaController {
 
 	@GetMapping("/pessoas/{page}")
 	public String pessoasPaginacao(@PathVariable(value = "page") int page, Model model, Authentication auth) {
-		if(page < 1) {
+		if (page < 1) {
 			page = 1;
 		}
 		// Antigo
 		// Page<Pessoa> pessoas = pessoaService.findPaging(page);
 		Page<Pessoa> pessoas = pessoaService.buscarPaginacaoPorUsuario(page);
-		
+
 		// atualizar notificacao
 		Usuario usuario = usuarioService.buscarUsuarioPorEmail(auth.getName());
 		usuario.setNotificacao(0);
@@ -229,9 +242,97 @@ public class PessoaController {
 		return "usuario";
 	}
 
+	@GetMapping("/emailReset")
+	public String emailResetPage() {
+		return "emailReset";
+	}
+
+	@PostMapping("/emailReset")
+	public String emailResetSend(HttpServletRequest request, Model model) throws MessagingException {
+		String email = request.getParameter("email");
+		Usuario usuario = usuarioService.buscarUsuarioPorEmail(email);
+		if (usuario == null) {
+			model.addAttribute("msgReset", "Usuário não encontrado!");
+			return "emailReset";
+		} else {
+			String token = UUID.randomUUID().toString();
+			usuario.setToken(token);
+			usuarioService.salvar(usuario);
+			String msg = "<html><body> Click no link abaixo para resetar sua senha";
+			msg += "<br /> Esse Link tem um tempo de duração de 30 minutos: ";
+			msg += " http://localhost:8080/novaSenha?token=" + usuario.getToken() + " <br /> </body></html>";
+			enviarEmail(email, msg);
+			model.addAttribute("msgReset", "Email enviado com sucesso para: " + email + "!");
+			return "emailReset";
+
+		}
+
+	}
+
+	@GetMapping("/novaSenha")
+	public String novaSenha(@RequestParam("token") String token , Model model) {
+		Usuario usuario = usuarioService.buscarPorToken(token);
+		if (usuario == null) {
+			return "error";
+		} else {
+			model.addAttribute("usuario", usuario);
+			return "novaSenha";
+		}
+	}
+
+	@GetMapping("/email")
+	@ResponseBody
+	public String email(HttpServletRequest request) throws MessagingException {
+		String token = UUID.randomUUID().toString();
+		String msg = "<html><body> Click no link abaixo para resetar sua senha";
+		msg += "<br /> Esse Link tem um tempo de duração de 30 minutos: ";
+		msg += request.getLocalName()+"/novaSenha?token=" + token + " <br /> </body></html>";
+		enviarEmail("viniciuseliasmoreira@hotmail.com", msg);
+		return "email enviado com sucesso!";
+	}
+
+	public void enviarEmail(String emailTo, String msgEmail) throws MessagingException {
+		JavaMailSenderImpl sender = emailConfig();
+		MimeMessage mimeMessage = sender.createMimeMessage();
+		MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "utf-8");
+		helper.setTo(emailTo);
+		helper.setSubject("CRUD-PESSOAS resete da senha");
+		helper.setText(msgEmail, true);
+		sender.send(mimeMessage);
+	}
+
+	public JavaMailSenderImpl emailConfig() {
+		JavaMailSenderImpl sender = new JavaMailSenderImpl();
+		sender.setUsername("fake2fake2016@gmail.com");
+		sender.setPassword("cmofasdotia");
+
+		Properties mailProperties = new Properties();
+		mailProperties.put("mail.smtp.host", "smtp.gmail.com");
+		mailProperties.put("mail.smtp.auth", "true");
+		mailProperties.put("mail.smtp.port", "465");
+		mailProperties.put("mail.smtp.starttls.enable", "true");
+		mailProperties.put("mail.smtp.socketFactory.port", "465");
+		mailProperties.put("mail.smtp.socketFactory.fallback", "false");
+		mailProperties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+		sender.setJavaMailProperties(mailProperties);
+		return sender;
+	}
+
 	@ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
 	public String erro() {
 		return "erro";
+	}
+
+	@GetMapping("/password")
+	@ResponseBody
+	public String verificaSenha() {
+
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		boolean matches = encoder.matches("321", "$2a$10$PdwmKFfYpnPARb5aFr232eSq.r2xdwJ.NM9st0EUVJCxVn4zQbVDW");
+		if (matches)
+			return "true";
+		else
+			return "false";
 	}
 
 	@GetMapping(value = "/pesquisa")

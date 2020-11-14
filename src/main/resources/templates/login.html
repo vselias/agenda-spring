@@ -26,19 +26,19 @@ body {
 
 				<h4 class="text-center text-light my-5">Página de Login</h4>
 
+				<div th:if="${param.error}">
+					<div style="max-width: 320px;"
+						class="col-lg-5 text-center my-1 rounded bg-light text-danger ">Login
+						ou senha inválidos!</div>
+				</div>
+				<div th:if="${param.logout}">
+					<div style="max-width: 320px;"
+						class="col-lg-5 text-center my-1 rounded bg-light text-danger">Você
+						foi disconectado!</div>
+				</div>
+
 				<form action="#" th:action="@{/login}" method="post"
 					style="max-width: 700px;">
-					<div th:if="${param.error}">
-						<div style="max-width:320px;"
-							class="col-lg-5 text-center my-1 rounded bg-light text-danger ">Login
-							ou senha inválidos!</div>
-					</div>
-					<div th:if="${param.logout}">
-						<div style="max-width:320px;" 
-							class="col-lg-5 text-center my-1 rounded bg-light text-danger">Você
-							foi disconectado!</div>
-					</div>
-
 					<div class="col-lg-6">
 						<input type="text" name="username"
 							class="text-center form-control" placeholder="E-mail">
@@ -50,7 +50,9 @@ body {
 					<div class="col-lg-6">
 						<button class="btn btn-dark w-100 py-3" type="submit">Login</button>
 						<a class="btn btn-success w-100 py-3" th:href="@{/usuario}">
-							Novo Usuário</a>
+							Novo Usuário</a> 
+						<a class="btn btn-info w-100 py-3"
+							th:href="@{/emailReset}">Esqueceu sua senha?</a>
 					</div>
 				</form>
 

@@ -49,5 +49,10 @@ public class UsuarioServiceImpl implements UsuarioService {
 		return userDAO.buscarUsuarioPorEmail(email);
 	}
 
+	@Override
+	public Usuario buscarPorToken(String token) {
+		return userDAO.buscarUsuarioPorToken(token);
+	}
+
 
 }
