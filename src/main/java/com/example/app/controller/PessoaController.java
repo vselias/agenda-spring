@@ -269,7 +269,7 @@ public class PessoaController {
 			String token = UUID.randomUUID().toString();
 			usuario.setToken(token);
 			usuarioService.salvar(usuario);
-			String msg = "<html> <body><img src=\"cid:crudImg\" width=\"30px\" height=\"25\" />";
+			String msg = "<html><body>";
 			msg += "<h4>Prezado, Click no link abaixo para resetar sua senha!</h4>";
 			msg += "<br />";
 			msg += "<h4>" + URL_SITE + "/verificaNovaSenha?token=" + usuario.getToken()
