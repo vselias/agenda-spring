@@ -302,6 +302,7 @@ public class PessoaController {
 				return "novaSenha";
 			}
 		}
+		usuario.setSenha(new BCryptPasswordEncoder().encode(usuario.getSenha()));
 		usuarioService.salvar(usuario);
 		model.addAttribute("msgNovaSenha", "Senha atualizada com sucesso!");
 		model.addAttribute("usuario", new Usuario());
