@@ -44,7 +44,7 @@ body {
 							th:if="${#fields.hasErrors('senha')}" th:errors="*{senha}"></div>
 					</div>
 					<div class="col-lg-6">
-						<button class="btn btn-success w-100 py-3" type="submit">Salvar</button>
+						<button th:if="${usuario.id} ne null" class="btn btn-success w-100 py-3" type="submit">Salvar</button>
 						<a th:href="@{/login}" class="btn btn-dark w-100 py-3">Login</a>
 					</div>
 				</form>
