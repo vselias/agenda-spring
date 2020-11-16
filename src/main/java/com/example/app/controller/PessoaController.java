@@ -331,8 +331,8 @@ public class PessoaController {
 
 	public JavaMailSenderImpl emailConfig() {
 		JavaMailSenderImpl sender = new JavaMailSenderImpl();
-		sender.setUsername("fake2fake2016@gmail.com");
-		sender.setPassword("cmofasdotia");
+		sender.setUsername("vinieliasm@gmail.com");
+		sender.setPassword("password@90");
 
 		Properties mailProperties = new Properties();
 		mailProperties.put("mail.smtp.host", "smtp.gmail.com");
@@ -343,8 +343,6 @@ public class PessoaController {
 		mailProperties.put("mail.smtp.socketFactory.fallback", "false");
 		mailProperties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 
-
-		
 		sender.setJavaMailProperties(mailProperties);
 		return sender;
 	}
@@ -409,16 +407,16 @@ public class PessoaController {
 			tbodyFile += "<td>" + (pessoa.getDataCadastro() != null ? sdf.format(pessoa.getDataCadastro()) : "N/A")
 					+ "</td>";
 			tbodyFile += "<td>" + (pessoa.isAtivo() ? "Ativo" : "Desativado") + "</td>";
-			tbodyFile += "<td align='center' style='width:400px'><table class='w-100'>";
-			for (Doc doc : pessoa.getDocs()) {
-				tbodyFile += "<tr><td><div class='row' style='width: 400px;'>";
+			tbodyFile += "<td align='center' style='width:400px'><strong>Download:</strong> <br /><table class='w-100'>";
+			for (int i = 0; i < pessoa.getDocs().size(); i++) {
+				tbodyFile += "<tr><td><strong>Arquivo "+(i+1)+": </strong><div class='row' style='width: 400px;'>";
 				// div btn Download
-				tbodyFile += "<div class='col-sm-10'> <strong>Download:</strong> <br /> <a"
-						+ "	style='word-wrap: break-word;'  href='/download/" + doc.getId() + "'>"
-						+ doc.getNomeArquivo() + "	</a></div>";
+				tbodyFile += "<div class='col-sm-10'>  <a"
+						+ "	style='word-wrap: break-word;'  href='/download/" + pessoa.getDocs().get(i).getId() + "'>"
+						+ pessoa.getDocs().get(i).getNomeArquivo() + "	</a></div>";
 				// div btn Delete Download
 				tbodyFile += "<div class='col-sm-2 justify-content-end d-flex align-items-center'>"
-						+ "	<a onclick='return confirm(\"Deseja excluir?\")' href='/del-doc?id=" + doc.getId()
+						+ "	<a onclick='return confirm(\"Deseja excluir?\")' href='/del-doc?id=" + pessoa.getDocs().get(i).getId()
 						+ "' class='mr-2 btn btn-sm btn-danger'> <i class='fas fa-trash-alt'></i>" + "	</a>  </div>";
 				tbodyFile += "</div></td></tr>";
 			}

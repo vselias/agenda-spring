@@ -113,17 +113,18 @@
 										th:text="${pessoa.dataCadastro} ? ${#dates.format(pessoa.dataCadastro, 'dd/MM/yyyy')}: 'N/A'">
 									</td>
 									<td th:text="${pessoa.ativo} ? 'Ativo': 'Desativado'"></td>
-									<td style="width: 400px;">
+									<td align="center" style="width: 400px;"><strong>Download</strong>
+										<br />
 										<table class="w-100">
-											<tr th:each="doc : ${pessoa.docs}">
+											<tr th:each="doc, row : ${pessoa.docs}">
 												<td>
 													<div class="row" style="width: 400px;">
 														<div class="col-sm-10">
-															<strong>Download:</strong> <br /> <a
+															<strong>Arquivo [[${row.count}]]:</strong> 
+															<a
 																style="word-wrap: break-word;"
-																th:href="@{'/download/'+${doc.id}}"> <strong>
-																	<th:block th:text="${doc.nomeArquivo}" />
-															</strong>
+																th:href="@{'/download/'+${doc.id}}"> <th:block
+																	th:text="${doc.nomeArquivo}" />
 															</a>
 														</div>
 
@@ -143,8 +144,7 @@
 													<p class="text-center" align="center">Sem Arquivos.</p>
 												</td>
 											</tr>
-										</table>
-									</td>
+										</table></td>
 								</tr>
 							</tbody>
 						</table>
