@@ -77,6 +77,7 @@ $(function() {
 
 	var setDefaultActive = function() {
 		var path = window.location.pathname;
+		console.log(path);
 		var element = $("a.nav-link[href='" + path + "']");
 		element.addClass("active");
 	}

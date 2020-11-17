@@ -2,7 +2,12 @@
 .table td, .table th {
 	padding: .10rem !important;
 }
-
+.navbar-dark .navbar-brand {
+   color: rgba(255,255,255,.5);
+}
+.active{
+	color: #fff !important;
+}
 .logo{
 	max-width: 50px;
 	max-height: 50px;
