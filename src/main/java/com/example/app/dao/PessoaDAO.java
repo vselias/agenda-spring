@@ -27,13 +27,12 @@ public interface PessoaDAO extends PagingAndSortingRepository<Pessoa, Long> {
 	@Query("SELECT p from Pessoa p join p.usuario u where u.id = :id")
 	public List<Pessoa> buscarTodosPorUsuario(@Param("id") Long id);
 	
-	@Query("SELECT p from Pessoa p join p.usuario u where u.id = :id and "
-			+"lower(p.nome) like lower(concat('%', :texto ,'%'))"
-			+"or lower(p.cidade) like lower(concat('%', :texto ,'%'))"
-			+"or lower(p.sexo) like lower(concat('%', :texto ,'%'))"
-			+"or lower(p.estado) like lower(concat('%', :texto ,'%'))"
-			+"or lower(p.email) like lower(concat('%', :texto ,'%'))"
-			+ "")
+	@Query("SELECT p from Pessoa p join p.usuario u where u.id = :id "
+			+"and (lower(p.nome) like lower(concat(:texto,'%'))"
+			+"or lower(p.cidade) like lower(concat(:texto,'%'))"
+			+"or lower(p.sexo) like lower(concat(:texto,'%'))"
+			+"or lower(p.estado) like lower(concat(:texto,'%'))"
+			+"or lower(p.email) like lower(concat(:texto,'%')))")
 	public Page<Pessoa> buscarPorNome(@Param("texto") String texto, @Param("id") Long id ,Pageable pageable);
 
 }
