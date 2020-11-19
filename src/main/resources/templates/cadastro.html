@@ -17,17 +17,14 @@
 					<strong>[[${msgCadastro}]]</strong>
 				</p>
 				<div class="row justify-content-center">
-					<p th:if="${pessoa.id} ne null and ${msgCadastro} eq null" class="text-dark">
-						Usuario ID: [[${pessoa.id}]], [[${pessoa.nome}]], selecionado para edição.
-					</p>
+					<p th:if="${pessoa.id} ne null and ${msgCadastro} eq null"
+						class="text-dark">Usuario ID: [[${pessoa.id}]],
+						[[${pessoa.nome}]], selecionado para edição.</p>
 				</div>
 				<form action="#" enctype="multipart/form-data"
 					th:action="@{/salvar}" method="post" th:object="${pessoa}">
-					<div class="row justify-content-center">
+					<div class="row justify-content-center my-4">
 						<div class="col-lg-5">
-							<div class="form-group">
-								<input type="hidden" th:field="${pessoa.id}" name="id">
-							</div>
 							<div class="form-group   col-lg-7 ">
 								<label class="">Nome:</label> <input class=" form-control"
 									type="text" th:field="${pessoa.nome}" name="nome">
@@ -51,6 +48,9 @@
 									th:field="${pessoa.ativo}" class="form-checkbox"
 									type="checkbox" value="ativo">
 							</div>
+							<div class="form-group">
+								<input type="hidden" th:field="${pessoa.id}" name="id">
+							</div>
 						</div>
 						<div class="col-lg-5">
 							<div class="form-group col-lg-6">
@@ -65,16 +65,16 @@
 								</select>
 							</div>
 							<div class="form-group col-lg-4 ">
-								<label>Sexo:</label>
-								<select th:field="${pessoa.sexo}" class="form-control">
+								<label>Sexo:</label> <select th:field="${pessoa.sexo}"
+									class="form-control">
 									<option value="Masculino">Masculino</option>
 									<option value="Feminino">Feminino</option>
 									<option value="Neutro">Neutro</option>
 								</select>
 							</div>
 							<div class="form-group col-lg-8 ">
-								<label>Arquivos:</label>
-								<input type="file" name="arquivos"  multiple="multiple" />
+								<label>Arquivos:</label> <input type="file" name="arquivos"
+									multiple="multiple" />
 								<div class="mt-2 text-break h6 text-left" id="arquivos"></div>
 							</div>
 							<div class="form-group col-lg-4 my-5">
