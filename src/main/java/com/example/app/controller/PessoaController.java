@@ -1,7 +1,5 @@
 package com.example.app.controller;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -11,39 +9,30 @@ import java.util.Properties;
 import java.util.UUID;
 
 import javax.mail.MessagingException;
-import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-import javax.validation.executable.ValidateOnExecution;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.MailException;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.ResourceUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -71,7 +60,11 @@ public class PessoaController {
 	@Autowired
 	private JavaMailSender javaMailSender;
 	@Autowired
+	@Value("classpath:/static/imagens/crud.png")
+	private Resource imgLogo;
+	@Autowired
 	private UsuarioService usuarioService;
+	
 	private final String URL_LOCAL = "http://localhost:8080";
 	private final String URL_SITE = "https://agenda-spring.herokuapp.com";
 
@@ -312,7 +305,8 @@ public class PessoaController {
 			String msg = "<html><body><img style='float:left; width:20px; height:20px' src='cid:logoImg'/> <h3>CRUD-PESSOAS</h3> <br />";
 			msg += "<h4>Prezado, Click no link abaixo para resetar sua senha! ;)</h4>";
 			msg += "<br />";
-			msg += "<a href='"+URL_SITE + "/verificaNovaSenha?token=" + usuario.getToken() + "'>Confirmar senha</a> <br /> </body></html>";
+			msg += "<a href='" + URL_SITE + "/verificaNovaSenha?token=" + usuario.getToken()
+					+ "'>Confirmar senha</a> <br /> </body></html>";
 			enviarEmail(email, msg);
 			model.addAttribute("msgReset", "Email enviado com sucesso para: " + email + "!");
 			return "emailReset";
@@ -326,8 +320,9 @@ public class PessoaController {
 		helper.setTo(emailTo);
 		helper.setSubject("CRUD-PESSOAS redefinição de nova senha");
 		helper.setText(msgEmail, true);
-		helper.addInline("logoImg", new ClassPathResource("classpath:/static/imagens/crud.png").getFile());
+		helper.addInline("logoImg", imgLogo.getFile());
 		sender.send(mimeMessage);
+
 	}
 
 	public JavaMailSenderImpl emailConfig() {
@@ -356,7 +351,8 @@ public class PessoaController {
 	@GetMapping("/imagem")
 	@ResponseBody
 	public String imagem() throws IOException {
-		return new ClassPathResource("/static/imagens/crud.png").getFile().getAbsolutePath();
+		//return new ClassPathResource("/static/imagens/crud.png").getFile().getAbsolutePath();
+		return imgLogo.getFile().getAbsolutePath();
 	}
 
 	@GetMapping("/password")
