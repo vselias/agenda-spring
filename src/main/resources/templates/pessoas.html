@@ -113,7 +113,7 @@
 										th:text="${pessoa.dataCadastro} ? ${#dates.format(pessoa.dataCadastro, 'dd/MM/yyyy')}: 'N/A'">
 									</td>
 									<td th:text="${pessoa.ativo} ? 'Ativo': 'Desativado'"></td>
-									<td align="center" style="width: 400px;"><strong>Download</strong>
+									<td align="center" style="width: 400px;"><strong th:if="${not #lists.isEmpty(pessoa.docs)}">Download</strong>
 										<br />
 										<table class="w-100">
 											<tr th:each="doc, row : ${pessoa.docs}">
