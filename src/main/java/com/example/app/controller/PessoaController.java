@@ -258,27 +258,6 @@ public class PessoaController {
 		return "emailReset";
 	}
 
-	@PostMapping("/emailReset")
-	public String emailResetSend(HttpServletRequest request, Model model) throws MessagingException, IOException {
-		String email = request.getParameter("email");
-		Usuario usuario = usuarioService.buscarUsuarioPorEmail(email);
-		if (usuario == null) {
-			model.addAttribute("msgReset", "Usuário não encontrado!");
-			return "emailReset";
-		} else {
-			String token = UUID.randomUUID().toString();
-			usuario.setToken(token);
-			usuarioService.salvar(usuario);
-			String msg = "<html><body>";
-			msg += "<h4>Prezado, Click no link abaixo para resetar sua senha!</h4>";
-			msg += "<br />";
-			msg += URL_SITE + "/verificaNovaSenha?token=" + usuario.getToken() + " <br /> </body></html>";
-			enviarEmail(email, msg);
-			model.addAttribute("msgReset", "Email enviado com sucesso para: " + email + "!");
-			return "emailReset";
-		}
-	}
-
 	@GetMapping("/verificaNovaSenha")
 	public String verificaNovaSenha(@RequestParam("token") String token, Model model) {
 		Usuario usuario = usuarioService.buscarPorToken(token);
@@ -310,7 +289,7 @@ public class PessoaController {
 
 	@GetMapping("/email")
 	@ResponseBody
-	public String email(HttpServletRequest request) throws MessagingException {
+	public String email(HttpServletRequest request) throws MessagingException, IOException {
 		String token = UUID.randomUUID().toString();
 		String msg = "<html><body> Click no link abaixo para resetar sua senha";
 		msg += "<br /> Esse Link tem um tempo de duração de 30 minutos: ";
@@ -319,13 +298,35 @@ public class PessoaController {
 		return "email enviado com sucesso!";
 	}
 
-	public void enviarEmail(String emailTo, String msgEmail) throws MessagingException {
+	@PostMapping("/emailReset")
+	public String emailResetSend(HttpServletRequest request, Model model) throws MessagingException, IOException {
+		String email = request.getParameter("email");
+		Usuario usuario = usuarioService.buscarUsuarioPorEmail(email);
+		if (usuario == null) {
+			model.addAttribute("msgReset", "Usuário não encontrado!");
+			return "emailReset";
+		} else {
+			String token = UUID.randomUUID().toString();
+			usuario.setToken(token);
+			usuarioService.salvar(usuario);
+			String msg = "<html><body><img style='float:left; width:20px; height:20px' src='cid:logoImg'/> <h3>CRUD-PESSOAS</h3> <br />";
+			msg += "<h4>Prezado, Click no link abaixo para resetar sua senha! ;)</h4>";
+			msg += "<br />";
+			msg += "<a href='"+URL_SITE + "/verificaNovaSenha?token=" + usuario.getToken() + "'>Confirmar senha</a> <br /> </body></html>";
+			enviarEmail(email, msg);
+			model.addAttribute("msgReset", "Email enviado com sucesso para: " + email + "!");
+			return "emailReset";
+		}
+	}
+
+	public void enviarEmail(String emailTo, String msgEmail) throws MessagingException, IOException {
 		JavaMailSenderImpl sender = emailConfig();
 		MimeMessage mimeMessage = sender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "utf-8");
 		helper.setTo(emailTo);
 		helper.setSubject("CRUD-PESSOAS redefinição de nova senha");
 		helper.setText(msgEmail, true);
+		helper.addInline("logoImg", new ClassPathResource("/static/imagens/crud.png").getFile());
 		sender.send(mimeMessage);
 	}
 
@@ -350,6 +351,12 @@ public class PessoaController {
 	@ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
 	public String erro() {
 		return "erro";
+	}
+
+	@GetMapping("/imagem")
+	@ResponseBody
+	public String imagem() throws IOException {
+		return new ClassPathResource("/static/imagens/crud.png").getFile().getAbsolutePath();
 	}
 
 	@GetMapping("/password")
@@ -409,14 +416,16 @@ public class PessoaController {
 			tbodyFile += "<td>" + (pessoa.isAtivo() ? "Ativo" : "Desativado") + "</td>";
 			tbodyFile += "<td align='center' style='width:400px'><strong>Download:</strong> <br /><table class='w-100'>";
 			for (int i = 0; i < pessoa.getDocs().size(); i++) {
-				tbodyFile += "<tr><td><strong>Arquivo "+(i+1)+": </strong><div class='row' style='width: 400px;'>";
+				tbodyFile += "<tr><td><strong>Arquivo " + (i + 1)
+						+ ": </strong><div class='row' style='width: 400px;'>";
 				// div btn Download
-				tbodyFile += "<div class='col-sm-10'>  <a"
-						+ "	style='word-wrap: break-word;'  href='/download/" + pessoa.getDocs().get(i).getId() + "'>"
-						+ pessoa.getDocs().get(i).getNomeArquivo() + "	</a></div>";
+				tbodyFile += "<div class='col-sm-10'>  <a" + "	style='word-wrap: break-word;'  href='/download/"
+						+ pessoa.getDocs().get(i).getId() + "'>" + pessoa.getDocs().get(i).getNomeArquivo()
+						+ "	</a></div>";
 				// div btn Delete Download
 				tbodyFile += "<div class='col-sm-2 justify-content-end d-flex align-items-center'>"
-						+ "	<a onclick='return confirm(\"Deseja excluir?\")' href='/del-doc?id=" + pessoa.getDocs().get(i).getId()
+						+ "	<a onclick='return confirm(\"Deseja excluir?\")' href='/del-doc?id="
+						+ pessoa.getDocs().get(i).getId()
 						+ "' class='mr-2 btn btn-sm btn-danger'> <i class='fas fa-trash-alt'></i>" + "	</a>  </div>";
 				tbodyFile += "</div></td></tr>";
 			}
