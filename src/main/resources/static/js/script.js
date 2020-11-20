@@ -81,6 +81,8 @@ $(function() {
 		var element = $("a.nav-link[href='" + path + "']");
 		if(path.startsWith('/edit/') || path.startsWith('/salvar')){
 			element = $("a.nav-link[href='/cadastro']");
+		}else if(path.startsWith('/sort/')){
+			element = $("a.nav-link[href='/pessoas/1']");
 		}
 		element.addClass("active border-menu");
 
