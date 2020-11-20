@@ -79,7 +79,7 @@ $(function() {
 		var path = window.location.pathname;
 		console.log(path);
 		var element = $("a.nav-link[href='" + path + "']");
-		if(path.startsWith('/edit/')){
+		if(path.startsWith('/edit/') || path.startsWith('/salvar')){
 			element = $("a.nav-link[href='/cadastro']");
 		}
 		element.addClass("active border-menu");
