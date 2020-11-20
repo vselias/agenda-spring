@@ -326,7 +326,7 @@ public class PessoaController {
 		helper.setTo(emailTo);
 		helper.setSubject("CRUD-PESSOAS redefinição de nova senha");
 		helper.setText(msgEmail, true);
-		helper.addInline("logoImg", new ClassPathResource("/static/imagens/crud.png").getFile());
+		helper.addInline("logoImg", new ClassPathResource("classpath:/static/imagens/crud.png").getFile());
 		sender.send(mimeMessage);
 	}
 
