@@ -144,7 +144,8 @@
 													<p class="text-center" align="center">Sem Arquivos.</p>
 												</td>
 											</tr>
-										</table></td>
+										</table>
+									</td>
 								</tr>
 							</tbody>
 						</table>
@@ -169,17 +170,9 @@
 						</ul>
 					</nav>
 				</div>
-
-
-
 			</div>
 		</div>
+		<th:block th:replace="footer" />
 	</div>
 </body>
 </html>
-
-<!-- 				<div  class="row justify-content-center  my-3"> -->
-<!-- 						<a th:if="${page} != 1" th:href="@{'/pessoas/'+${page-1}}" class="btn btn-sm btn-dark" > &#60;&#60; Anterior</a> -->
-<!-- 						<span class="h6 span">[[${page}]] / [[${numPaginas}]]</span> -->
-<!-- 						<a th:if="${page} < ${numPaginas}"  th:href="@{'/pessoas/'+${page+1}}" class="btn btn-sm btn-dark" >Próximo &#62;&#62;</a> -->
-<!-- 				</div> -->
