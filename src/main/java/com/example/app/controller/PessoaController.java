@@ -379,7 +379,7 @@ public class PessoaController {
 		for (Pessoa pessoa : pesquisa) {
 			tbody += "<tr>";
 			tbody += "<td>" + pessoa.getId() + "</td>";
-			tbody += "<td style='max-width: 230px' class='text-break'>" + pessoa.getNome() + "</td>";
+			tbody += "<td>" + pessoa.getNome() + "</td>";
 			tbody += "<td>" + pessoa.getEmail() + "</td>";
 			tbody += "<td>" + (pessoa.getDataCadastro() != null ? sdf.format(pessoa.getDataCadastro()) : "N/A")
 					+ "</td>";
