@@ -8,9 +8,7 @@
 body {
 	background-image: url('/imagens/login-background.jpg');
 	background-repeat: no-repeat;
-	background-attachment: fixed;
 	background-position: center;
-	background-attachment: fixed;
 }
 </style>
 </head>
@@ -25,7 +23,7 @@ body {
 
 				<div class="bg-success text-white text-center col-lg-3 mb-3"
 					th:if="${msgUsuario}" th:text="${msgUsuario}"></div>
-				
+
 				<form th:action="@{/usuario}" method="post" th:object="${usuario}"
 					style="max-width: 700px;">
 					<div class="col-lg-6">

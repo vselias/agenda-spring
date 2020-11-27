@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta charset="utf-8">
 <title>Lista de Pessoas</title>
@@ -128,7 +128,7 @@
 															</a>
 														</div>
 
-														<div
+														<div sec:authorize="hasRole('ROLE_USER')"
 															class="col-sm-2 d-flex justify-content-end align-items-center">
 															<a onclick="return confirm('Deseja excluir?')"
 																th:href="@{'/del-doc?id='+${doc.id}}"

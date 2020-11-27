@@ -2,20 +2,18 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Página de Login</title>
 <th:block th:replace="boostrap" />
-</head>
-
 <style>
 body {
 	background-image: url('/imagens/login-background.jpg');
 	background-repeat: no-repeat;
-	background-attachment: fixed;
 	background-position: center;
-	background-attachment: fixed;
-	background-repeat: no-repeat;
 }
 </style>
+</head>
+
 <body>
 
 	<div class="container-fluid text-center">
@@ -50,8 +48,7 @@ body {
 					<div class="col-lg-6">
 						<button class="btn btn-dark w-100 py-3" type="submit">Login</button>
 						<a class="btn btn-success w-100 py-3" th:href="@{/usuario}">
-							Novo Usuário</a> 
-						<a class="w-100 text-white py-3"
+							Novo Usuário</a> <a class="w-100 text-white py-3"
 							th:href="@{/emailReset}">Esqueceu sua senha?</a>
 					</div>
 				</form>
