@@ -1,0 +1,15 @@
+{
+  "name": "CRUD-PESSOAS",
+  "short_name": "CRUD-PESSOAS",
+  "theme_color": "#3a3d3b",
+  "background_color": "#e3e8e5",
+  "display": "standalone",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "/main/resources/static/imagens/crud.png",
+      "sizes": "72x72",
+      "type": "image/png"
+    }
+  ]
+}
