@@ -379,7 +379,6 @@ public class PessoaController {
 		String tbody = "";
 		String tbodyFile = "";
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		String sexo = "";
 
 		tbody = preencherTabelaPessoas(pesquisa, tbody, sdf);
 		tbodyFile = preencherTabelaArquivos(pesquisa, tbodyFile, sdf);
@@ -391,7 +390,7 @@ public class PessoaController {
 	}
 
 	private String preencherTabelaArquivos(Page<Pessoa> pesquisa, String tbodyFile, SimpleDateFormat sdf) {
-		tbodyFile = "<tbody>";
+		tbodyFile += "<tbody>";
 		for (Pessoa pessoa : pesquisa) {
 			tbodyFile += "<tr>";
 			tbodyFile += "<td>" + pessoa.getId() + "</td>";
@@ -423,7 +422,7 @@ public class PessoaController {
 			tbodyFile += "<tr><td colspan='9' class='text-center h6'>Nenhum registro encontrado...</td></tr>";
 		}
 
-		tbodyFile = "</tbody>";
+		tbodyFile += "</tbody>";
 		return tbodyFile;
 	}
 
@@ -448,11 +447,11 @@ public class PessoaController {
 			tbody += "</td>";
 			tbody += "</tr>";
 		}
-		tbody += "</tbody>";
-		
+
 		if (pesquisa.getContent().isEmpty()) {
 			tbody += "<tr><td colspan='9' class='text-center h6'>Nenhum registro encontrado...</td></tr>";
 		}
+		tbody += "</tbody>";
 
 		return tbody;
 	}
