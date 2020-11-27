@@ -9,10 +9,10 @@
 	</button>
 	<div class="collapse navbar-collapse" id="navbarNav">
 		<ul class="navbar-nav">
-			<li class="nav-item"><a class="nav-link" th:href="@{/cadastro}">Cadastrar
+			<li class="nav-item"><a class="nav-link text-center" th:href="@{/cadastro}">Cadastrar
 					<span class="sr-only">(current)</span>
 			</a></li>
-			<li class="nav-item"><a class="nav-link" th:href="@{/pessoas/1}">Listar <span th:if="${usuario} ne null and ${usuario.notificacao} > 0" class="badge badge-danger">[[${usuario.notificacao}]]</span></a></li>
+			<li class="nav-item"><a class="nav-link text-center" th:href="@{/pessoas/1}">Listar <span th:if="${usuario} ne null and ${usuario.notificacao} > 0" class="badge badge-danger">[[${usuario.notificacao}]]</span></a></li>
 		</ul>
 		<form th:action="@{/logout}" method="post" class="form-inline ml-auto">
 			<p class="text-white mr-1 h6">

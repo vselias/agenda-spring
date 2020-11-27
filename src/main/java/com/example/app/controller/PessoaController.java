@@ -64,7 +64,7 @@ public class PessoaController {
 	private Resource imgLogo;
 	@Autowired
 	private UsuarioService usuarioService;
-	
+
 	private final String URL_LOCAL = "http://localhost:8080";
 	private final String URL_SITE = "https://agenda-spring.herokuapp.com";
 
@@ -299,18 +299,22 @@ public class PessoaController {
 			model.addAttribute("msgReset", "Usuário não encontrado!");
 			return "emailReset";
 		} else {
-			String token = UUID.randomUUID().toString();
-			usuario.setToken(token);
+			usuario.setToken(UUID.randomUUID().toString());
 			usuarioService.salvar(usuario);
-			String msg = "<html><body><img style='float:left; width:20px; height:20px' src='cid:logoImg'/> <h3>CRUD-PESSOAS</h3> <br />";
-			msg += "<h4>Prezado, Click no link abaixo para resetar sua senha! ;)</h4>";
-			msg += "<br />";
-			msg += "<a href='" + URL_SITE + "/verificaNovaSenha?token=" + usuario.getToken()
-					+ "'>Confirmar senha</a> <br /> </body></html>";
+			String msg = preencherMsgEmail(usuario);
 			enviarEmail(email, msg);
 			model.addAttribute("msgReset", "Email enviado com sucesso para: " + email + "!");
 			return "emailReset";
 		}
+	}
+
+	private String preencherMsgEmail(Usuario usuario) {
+		String msg = "<html><body><img style='float:left; width:20px; height:20px' src='cid:logoImg'/> <h3>CRUD-PESSOAS</h3> <br />";
+		msg += "<h4>Prezado, Click no link abaixo para resetar sua senha! ;)</h4>";
+		msg += "<br />";
+		msg += "<a href='" + URL_SITE + "/verificaNovaSenha?token=" + usuario.getToken()
+				+ "'>Confirmar senha</a> <br /> </body></html>";
+		return msg;
 	}
 
 	public void enviarEmail(String emailTo, String msgEmail) throws MessagingException, IOException {
@@ -351,7 +355,8 @@ public class PessoaController {
 	@GetMapping("/imagem")
 	@ResponseBody
 	public String imagem() throws IOException {
-		//return new ClassPathResource("/static/imagens/crud.png").getFile().getAbsolutePath();
+		// return new
+		// ClassPathResource("/static/imagens/crud.png").getFile().getAbsolutePath();
 		return imgLogo.getFile().getAbsolutePath();
 	}
 
@@ -371,38 +376,22 @@ public class PessoaController {
 	public Map<String, String> pesquisa(@RequestParam(value = "texto") String texto, Authentication authentication) {
 		Usuario usuario = usuarioService.buscarUsuarioPorEmail(authentication.getName());
 		Page<Pessoa> pesquisa = pessoaService.buscarPorNome(texto, usuario.getId());
-		String tbody = "<tbody>";
-		String tbodyFile = "<tbody>";
+		String tbody = "";
+		String tbodyFile = "";
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		String sexo = "";
-		// primeira tabela
-		for (Pessoa pessoa : pesquisa) {
-			tbody += "<tr>";
-			tbody += "<td>" + pessoa.getId() + "</td>";
-			tbody += "<td>" + pessoa.getNome() + "</td>";
-			tbody += "<td>" + pessoa.getEmail() + "</td>";
-			tbody += "<td>" + (pessoa.getDataCadastro() != null ? sdf.format(pessoa.getDataCadastro()) : "N/A")
-					+ "</td>";
-			tbody += "<td>" + pessoa.getSexo() + "</td>";
-			tbody += "<td>" + (pessoa.isAtivo() ? "Ativo" : "Desativado") + "</td>";
-			tbody += "<td>" + pessoa.getCidade() + "</td>";
-			tbody += "<td>" + pessoa.getEstado() + "</td>";
-			tbody += "<td class='text-center'>";
-			tbody += "<a class='btn btn-sm btn-primary mr-1' href='/edit/" + pessoa.getId()
-					+ "'><i class='fas fa-pencil-alt'></i></a>";
-			tbody += "<a onclick='return confirm(\"Deseja excluir?\")' class='btn btn-sm btn-danger' href='/del/"
-					+ pessoa.getId() + "'><i class='fas fa-trash-alt'></i></a>";
-			tbody += "</td>";
-			tbody += "</tr>";
-		}
-		if (pesquisa.getContent().isEmpty()) {
-			tbody += "<tr><td colspan='9' class='text-center h6'>Nenhum registro encontrado...</td></tr>";
-			tbodyFile += "<tr><td colspan='9' class='text-center h6'>Nenhum registro encontrado...</td></tr>";
-		}
-		tbody += "</tbody>";
-		// fim primeira tabela
 
-		// segunda tabela
+		tbody = preencherTabelaPessoas(pesquisa, tbody, sdf);
+		tbodyFile = preencherTabelaArquivos(pesquisa, tbodyFile, sdf);
+
+		HashMap<String, String> json = new HashMap<String, String>();
+		json.put("tbody", tbody);
+		json.put("tbodyFile", tbodyFile);
+		return json;
+	}
+
+	private String preencherTabelaArquivos(Page<Pessoa> pesquisa, String tbodyFile, SimpleDateFormat sdf) {
+		tbodyFile = "<tbody>";
 		for (Pessoa pessoa : pesquisa) {
 			tbodyFile += "<tr>";
 			tbodyFile += "<td>" + pessoa.getId() + "</td>";
@@ -430,13 +419,42 @@ public class PessoaController {
 			}
 			tbodyFile += "</table></td></tr>";
 		}
-		tbodyFile += "</tbody>";
-		// fim segunda tabela
+		if (pesquisa.getContent().isEmpty()) {
+			tbodyFile += "<tr><td colspan='9' class='text-center h6'>Nenhum registro encontrado...</td></tr>";
+		}
 
-		HashMap<String, String> json = new HashMap<String, String>();
-		json.put("tbody", tbody);
-		json.put("tbodyFile", tbodyFile);
-		return json;
+		tbodyFile = "</tbody>";
+		return tbodyFile;
+	}
+
+	private String preencherTabelaPessoas(Page<Pessoa> pesquisa, String tbody, SimpleDateFormat sdf) {
+		tbody += "<tbody>";
+		for (Pessoa pessoa : pesquisa) {
+			tbody += "<tr>";
+			tbody += "<td>" + pessoa.getId() + "</td>";
+			tbody += "<td>" + pessoa.getNome() + "</td>";
+			tbody += "<td>" + pessoa.getEmail() + "</td>";
+			tbody += "<td>" + (pessoa.getDataCadastro() != null ? sdf.format(pessoa.getDataCadastro()) : "N/A")
+					+ "</td>";
+			tbody += "<td>" + pessoa.getSexo() + "</td>";
+			tbody += "<td>" + (pessoa.isAtivo() ? "Ativo" : "Desativado") + "</td>";
+			tbody += "<td>" + pessoa.getCidade() + "</td>";
+			tbody += "<td>" + pessoa.getEstado() + "</td>";
+			tbody += "<td class='text-center'>";
+			tbody += "<a class='btn btn-sm btn-primary mr-1' href='/edit/" + pessoa.getId()
+					+ "'><i class='fas fa-pencil-alt'></i></a>";
+			tbody += "<a onclick='return confirm(\"Deseja excluir?\")' class='btn btn-sm btn-danger' href='/del/"
+					+ pessoa.getId() + "'><i class='fas fa-trash-alt'></i></a>";
+			tbody += "</td>";
+			tbody += "</tr>";
+		}
+		tbody += "</tbody>";
+		
+		if (pesquisa.getContent().isEmpty()) {
+			tbody += "<tr><td colspan='9' class='text-center h6'>Nenhum registro encontrado...</td></tr>";
+		}
+
+		return tbody;
 	}
 
 }
