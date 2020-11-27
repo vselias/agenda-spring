@@ -2,7 +2,12 @@
 	#form-logout{
 		margin-top: 1em;
 	}
+	
+	.botao-inline{
+	display: inline-block !important;
 }
+}
+
 
 .table td, .table th {
 	padding: .10rem !important;

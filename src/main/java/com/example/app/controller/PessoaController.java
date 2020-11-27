@@ -395,7 +395,7 @@ public class PessoaController {
 		for (Pessoa pessoa : pesquisa) {
 			tbodyFile += "<tr>";
 			tbodyFile += "<td>" + pessoa.getId() + "</td>";
-			tbodyFile += "<td>" + pessoa.getNome() + "</td>";
+			tbodyFile += "<td class='text-nowrap'>" + pessoa.getNome() + "</td>";
 			tbodyFile += "<td>" + (pessoa.getDataCadastro() != null ? sdf.format(pessoa.getDataCadastro()) : "N/A")
 					+ "</td>";
 			tbodyFile += "<td>" + (pessoa.isAtivo() ? "Ativo" : "Desativado") + "</td>";
@@ -432,7 +432,7 @@ public class PessoaController {
 		for (Pessoa pessoa : pesquisa) {
 			tbody += "<tr>";
 			tbody += "<td>" + pessoa.getId() + "</td>";
-			tbody += "<td>" + pessoa.getNome() + "</td>";
+			tbody += "<td class='text-nowrap'>" + pessoa.getNome() + "</td>";
 			tbody += "<td>" + pessoa.getEmail() + "</td>";
 			tbody += "<td>" + (pessoa.getDataCadastro() != null ? sdf.format(pessoa.getDataCadastro()) : "N/A")
 					+ "</td>";
@@ -440,7 +440,7 @@ public class PessoaController {
 			tbody += "<td>" + (pessoa.isAtivo() ? "Ativo" : "Desativado") + "</td>";
 			tbody += "<td>" + pessoa.getCidade() + "</td>";
 			tbody += "<td>" + pessoa.getEstado() + "</td>";
-			tbody += "<td class='text-center'>";
+			tbody += "<td class='text-center text-nowrap'>";
 			tbody += "<a class='btn btn-sm btn-primary mr-1' href='/edit/" + pessoa.getId()
 					+ "'><i class='fas fa-pencil-alt'></i></a>";
 			tbody += "<a onclick='return confirm(\"Deseja excluir?\")' class='btn btn-sm btn-danger' href='/del/"

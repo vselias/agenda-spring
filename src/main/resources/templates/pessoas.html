@@ -62,7 +62,7 @@
 						<tbody>
 							<tr th:each="pessoa: ${pessoas}">
 								<td th:text="${pessoa.id}"></td>
-								<td th:text="${pessoa.nome} eq ''? 'N/A': ${pessoa.nome}"></td>
+								<td class="text-nowrap" th:text="${pessoa.nome} eq ''? 'N/A': ${pessoa.nome}"></td>
 								<td th:text="${pessoa.email}"></td>
 								<td
 									th:text="${pessoa.dataCadastro} ? ${#dates.format(pessoa.dataCadastro, 'dd/MM/yyyy')}: 'N/A'">
@@ -71,7 +71,7 @@
 								<td th:text="${pessoa.ativo}? 'Ativo': 'Desativado'"></td>
 								<td th:text="${pessoa.cidade}"></td>
 								<td th:text="${pessoa.estado}"></td>
-								<td class="text-center"><a class="btn btn-sm btn-primary"
+								<td class="text-center text-nowrap"><a class="btn btn-sm btn-primary"
 									th:href="@{/edit/{id}(id=${pessoa.id})}"> <i
 										class="fas fa-pencil-alt"></i>
 								</a> <a class="btn btn-sm btn-danger"
@@ -103,7 +103,7 @@
 							<tbody>
 								<tr th:each="pessoa: ${pessoas}">
 									<td th:text="${pessoa.id}"></td>
-									<td th:text="${pessoa.nome} eq ''? 'N/A': ${pessoa.nome}"></td>
+									<td class="text-nowrap" th:text="${pessoa.nome} eq ''? 'N/A': ${pessoa.nome}"></td>
 									<td
 										th:text="${pessoa.dataCadastro} ? ${#dates.format(pessoa.dataCadastro, 'dd/MM/yyyy')}: 'N/A'">
 									</td>
