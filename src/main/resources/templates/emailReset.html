@@ -22,14 +22,14 @@ body {
 					Usuário</h4>
 
 				<p th:if="${msgReset}" th:text="${msgReset}"
-					class="col-lg-3 bg-info text-white text-center"></p>
+					class="col-lg-3 my-1 bg-white text-danger rounded text-center"></p>
 
 				<form action="#" th:action="@{/emailReset}" method="POST"
 					style="max-width: 700px;">
 
 					<div class="form-group col-lg-6">
 						<input type="text" name="email" class="text-center form-control"
-							placeholder="E-mail">
+							placeholder="Informe seu e-mail">
 					</div>
 					<div class="col-lg-6">
 						<button class="btn btn-success w-100 py-3" type="submit">Enviar</button>

@@ -49,7 +49,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	        			"/novaSenha", 
 	        			"/email",
 	        			"/usuario" 
-	        			,"/imagens/**").permitAll()
+	        			,"/imagens/**",
+	        			"/css/**",
+	        			"/js/**",
+	        			"manifest.json").permitAll()
 	            .anyRequest().authenticated()
 	            .and()
 	            .formLogin().loginPage("/login")

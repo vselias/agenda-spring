@@ -15,7 +15,7 @@
 			<li class="nav-item"><a class="nav-link text-center" th:href="@{/pessoas/1}">Listar <span th:if="${usuario} ne null and ${usuario.notificacao} > 0" class="badge badge-danger">[[${usuario.notificacao}]]</span></a></li>
 		</ul>
 		<form id="form-logout" th:action="@{/logout}" method="post" class="form-inline ml-auto">
-			<p class="text-white mr-1 h6">
+			<p class="text-white mr-1 h6 font-user">
 				<small>User: [[${#httpServletRequest.remoteUser}]]</small>
 			</p>
 			<button class="btn btn-sm btn-danger" type="submit">
