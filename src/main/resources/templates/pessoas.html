@@ -75,11 +75,11 @@
 								<td th:text="${pessoa.estado}"></td>
 								<td class="text-center text-nowrap"><a class="btn btn-sm btn-primary"
 									th:href="@{/edit/{id}(id=${pessoa.id})}"> <i
-										class="fas fa-pencil-alt"></i>
+										class="fa fa-pencil"></i>
 								</a> <a class="btn btn-sm btn-danger"
 									onclick="return confirm('Deseja excluir?')"
 									th:href="@{/del/{id}(id=${pessoa.id})}"> <i
-										class="fas fa-trash-alt"></i>
+										class="fa fa-trash-o"></i>
 								</a></td>
 							</tr>
 						</tbody>
@@ -129,7 +129,7 @@
 															<a onclick="return confirm('Deseja excluir?')"
 																th:href="@{'/del-doc?id='+${doc.id}}"
 																class="mr-2 btn btn-sm btn-danger"> <i
-																class="fas fa-trash-alt"></i>
+																class="fa fa-trash-o"></i>
 															</a>
 														</div>
 													</div>
@@ -152,7 +152,7 @@
 						aria-label="Navegação de página exemplo">
 						<ul class="pagination">
 							<li class="page-item"><a class="btn btn-dark"
-								th:href="@{/pessoas/1}"><i class='fas fa-step-backward'></i>
+								th:href="@{/pessoas/1}"><i class='fa fa-fast-backward'></i>
 									Primeiro </a></li>
 							<li th:class="${i == page} ? 'active page-item': 'page-item' "
 								th:each="i : ${#numbers.sequence(1, numPaginas)}"
@@ -161,7 +161,7 @@
 							</a></li>
 							<li class="page-item"><a class="btn btn-dark"
 								th:href="@{'/pessoas/'+${numPaginas}}">Último <i
-									class='fas fa-step-forward'></i></a></li>
+									class='fa fa-fast-forward'></i></a></li>
 						</ul>
 					</nav>
 				</div>

@@ -415,17 +415,16 @@ public class PessoaController {
 			tbodyFile += "<td>" + (pessoa.isAtivo() ? "Ativo" : "Desativado") + "</td>";
 			tbodyFile += "<td align='center' style='width:400px'><strong>Download:</strong> <br /><table class='w-100'>";
 			for (int i = 0; i < pessoa.getDocs().size(); i++) {
-				tbodyFile += "<tr><td><strong>Arquivo " + (i + 1)
-						+ ": </strong><div class='row' style='width: 400px;'>";
+				tbodyFile += "<tr><td><div class='row' style='width: 400px;'>";
 				// div btn Download
-				tbodyFile += "<div class='col-sm-10'>  <a" + "	style='word-wrap: break-word;'  href='/download/"
+				tbodyFile += "<div class='col-sm-10'><strong>Arquivo "+(i+1)+":</strong>  <a" + "	style='word-wrap: break-word;'  href='/download/"
 						+ pessoa.getDocs().get(i).getId() + "'>" + pessoa.getDocs().get(i).getNomeArquivo()
 						+ "	</a></div>";
 				// div btn Delete Download
 				tbodyFile += "<div class='col-sm-2 justify-content-end d-flex align-items-center'>"
 						+ "	<a onclick='return confirm(\"Deseja excluir?\")' href='/del-doc?id="
 						+ pessoa.getDocs().get(i).getId()
-						+ "' class='mr-2 btn btn-sm btn-danger'> <i class='fas fa-trash-alt'></i>" + "	</a>  </div>";
+						+ "' class='mr-2 btn btn-sm btn-danger'> <i class='fa fa-trash-o'></i>" + "	</a>  </div>";
 				tbodyFile += "</div></td></tr>";
 			}
 			if (pessoa.getDocs().isEmpty()) {
@@ -456,9 +455,9 @@ public class PessoaController {
 			tbody += "<td>" + pessoa.getEstado() + "</td>";
 			tbody += "<td class='text-center text-nowrap'>";
 			tbody += "<a class='btn btn-sm btn-primary mr-1' href='/edit/" + pessoa.getId()
-					+ "'><i class='fas fa-pencil-alt'></i></a>";
+					+ "'><i class='fa fa-pencil'></i></a>";
 			tbody += "<a onclick='return confirm(\"Deseja excluir?\")' class='btn btn-sm btn-danger' href='/del/"
-					+ pessoa.getId() + "'><i class='fas fa-trash-alt'></i></a>";
+					+ pessoa.getId() + "'><i class='fa fa-trash-o'></i></a>";
 			tbody += "</td>";
 			tbody += "</tr>";
 		}
