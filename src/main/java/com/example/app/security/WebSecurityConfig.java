@@ -70,15 +70,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	            .and().sessionManagement().maximumSessions(1).expiredUrl("/cadastro");
 	    }
 	    
-	    @Bean
-	    CorsConfigurationSource corsConfigurationSource() 
-	    {
-	        CorsConfiguration configuration = new CorsConfiguration();
-	        configuration.setAllowedOrigins(Arrays.asList("https://localhost:8080"));
-	        configuration.setAllowedMethods(Arrays.asList("GET","POST"));
-	        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-	        source.registerCorsConfiguration("/**", configuration);
-	        return source;
-	    }
 
 }
