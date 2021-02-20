@@ -1,5 +1,7 @@
 package com.example.app.security;
 
+import java.util.Arrays;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -9,6 +11,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -52,7 +57,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	        			,"/imagens/**",
 	        			"/css/**",
 	        			"/js/**",
-	        			"/kit.fontawesome*",
 	        			"manifest.json").permitAll()
 	            .anyRequest().authenticated()
 	            .and()
@@ -64,5 +68,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	            .and()
 	            .logout().permitAll()
 	            .and().sessionManagement().maximumSessions(1).expiredUrl("/cadastro");
+	    }
+	    
+	    
+	    @Bean
+	    CorsConfigurationSource corsConfigurationSource() {
+	        CorsConfiguration configuration = new CorsConfiguration();
+	        configuration.setAllowedOrigins(Arrays.asList("https://kit.fontawesome.com/a076d05399.js"));
+	        configuration.setAllowedMethods(Arrays.asList("GET","POST"));
+	        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+	        source.registerCorsConfiguration("/**", configuration);
+	        return source;
 	    }
 }
