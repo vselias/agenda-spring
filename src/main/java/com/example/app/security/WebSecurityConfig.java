@@ -52,7 +52,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	        			,"/imagens/**",
 	        			"/css/**",
 	        			"/js/**",
-	        			"https://kit.fontawesome.com/a076d05399.js",
 	        			"manifest.json").permitAll()
 	            .anyRequest().authenticated()
 	            .and()
@@ -65,7 +64,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	            .logout().permitAll()
 	            .and().sessionManagement().maximumSessions(1).expiredUrl("/cadastro");
 	    }
-	    
-
 
 }
