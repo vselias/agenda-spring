@@ -40,6 +40,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.app.dao.DocDAO;
@@ -71,6 +74,16 @@ public class PessoaController {
 	@GetMapping("/pessoa")
 	public Pessoa pessoa(@RequestParam(value = "nome") String nome, @RequestParam(value = "tel") String telefone) {
 		return new Pessoa(2123223L, nome, telefone);
+	}
+
+	public WebMvcConfigurer corsConfigure() {
+		return new WebMvcConfigurerAdapter() {
+			@Override
+			public void addCorsMappings(CorsRegistry registry) {
+				registry.addMapping("/*").allowedOrigins("*");
+			}
+		};
+
 	}
 
 	@GetMapping("/")
