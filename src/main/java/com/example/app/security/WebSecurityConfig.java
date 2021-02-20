@@ -56,6 +56,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	        			"/usuario" 
 	        			,"/imagens/**",
 	        			"/css/**",
+	        			"https://kit.fontawesome.com/a076d05399.js",
 	        			"/js/**",
 	        			"manifest.json").permitAll()
 	            .anyRequest().authenticated()
