@@ -52,6 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	        			,"/imagens/**",
 	        			"/css/**",
 	        			"/js/**",
+	        			"/kit.fontawesome*",
 	        			"manifest.json").permitAll()
 	            .anyRequest().authenticated()
 	            .and()
