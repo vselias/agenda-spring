@@ -74,7 +74,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	    CorsConfigurationSource corsConfigurationSource() 
 	    {
 	        CorsConfiguration configuration = new CorsConfiguration();
-	        configuration.setAllowedOrigins(Arrays.asList("https://kit.fontawesome.com/a076d05399.js"));
+	        configuration.setAllowedOrigins(Arrays.asList("https://localhost:8080"));
 	        configuration.setAllowedMethods(Arrays.asList("GET","POST"));
 	        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 	        source.registerCorsConfiguration("/**", configuration);
