@@ -20,8 +20,7 @@
 				<div class="row justify-content-center">
 					<p th:if="${pessoa.id} ne null and ${msgCadastro} eq null"
 						class="text-dark">Usuario ID: [[${pessoa.id}]],
-						[[${pessoa.nome}]], selecionado para edição.
-					</p>
+						[[${pessoa.nome}]], selecionado para edição.</p>
 				</div>
 				<form action="#" enctype="multipart/form-data"
 					th:action="@{/salvar}" method="post" th:object="${pessoa}">
@@ -82,7 +81,7 @@
 							<div class="form-group col-lg-4 mt-4">
 
 								<button type="submit" class="btn btn-primary">
-									<i class="far fa-save"></i>
+									<i class='fas fa-save'></i>
 									<th:block th:text="${pessoa.id} ne null? 'Atualizar': 'Salvar'" />
 								</button>
 							</div>
